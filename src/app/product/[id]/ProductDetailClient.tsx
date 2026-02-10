@@ -3,8 +3,6 @@
 import Breadcrumb from "@/app/components/reuseableUI/breadcrumb";
 import CommonButton from "@/app/components/reuseableUI/commonButton";
 import PrimaryButton from "@/app/components/reuseableUI/primaryButton";
-import { SkeletonLoader } from "@/app/components/reuseableUI/skeletonLoader";
-import { SpinnerIcon } from "@/app/utils/svgs/spinnerIcon";
 import Image from "next/image";
 import {
   useParams,
@@ -19,15 +17,11 @@ import {
 } from "../../utils/googleTagManager";
 import { useAppConfiguration } from "../../components/providers/ServerAppConfigurationProvider";
 import { generateProductSchema, generateBreadcrumbSchema } from "@/lib/schema";
-import {
-  AncillaryPage,
-  fetchPageBySlug,
-} from "@/graphql/queries/getPageBySlug";
-import EditorRenderer from "@/app/components/richText/EditorRenderer";
 import ItemInquiryModal from "./components/itemInquiryModal";
 import { ProductInquiryIcon } from "@/app/utils/svgs/productInquiryIcon";
 import { partsLogicClient } from "@/lib/client/partslogic";
 import type { FitmentData } from "@/lib/api/shop";
+import type { ProductDetailsByIdData } from "@/graphql/queries/productDetailsById";
 /* No cart/checkout in this template. Product pages support "Request a Quote". */
 
 type EditorBlock =
@@ -48,57 +42,16 @@ type EditorBlock =
       };
     };
 
-// Client components can't import server-only modules for types. Keep a local
-// shape that matches `getProductBySlug` (server) for the fields we render.
-type InitialProduct = {
-  id: string;
-  name: string;
-  slug: string;
-  description: string | null;
-  category: { id: string; name: string } | null;
-  pricing: {
-    priceRange: {
-      start: { gross: { amount: number; currency: string } | null } | null;
-      stop: { gross: { amount: number; currency: string } | null } | null;
-    } | null;
-    discount: { gross: { amount: number; currency: string } | null } | null;
-  } | null;
-  media: Array<{ id: string; url: string; alt: string }>;
-  variants: Array<{
-    id: string;
-    name: string;
-    sku: string;
-    quantityAvailable: number | null;
-    pricing: {
-      price: { gross: { amount: number; currency: string } | null } | null;
-      priceUndiscounted: {
-        gross: { amount: number; currency: string } | null;
-      } | null;
-    } | null;
-    attributes: Array<{
-      attribute: { slug: string; name: string } | null;
-      values: Array<{ id: string; name: string }> | null;
-    }> | null;
-    weight: { value: number; unit: string } | null;
-  }>;
-  attributes: Array<{
-    attribute: { name: string; slug: string } | null;
-    values: Array<{ id: string; name: string }> | null;
-  }>;
-  metadata: Array<{ key: string; value: string }>;
-  collections: Array<{ id: string; name: string }>;
-};
+type InitialProduct = NonNullable<ProductDetailsByIdData["product"]>;
 
 export function ProductDetailClient({ initialProduct }: { initialProduct: InitialProduct }) {
   const params = useParams<{ id: string }>();
-  const [pdpContent, setPDPContent] = useState<AncillaryPage | null>(null);
   // The URL param contains the normalized slug (with single dashes)
   // We need to pass the original Saleor slug for the API query
   // Since we can't perfectly reconstruct it, we just use the normalized version
   // and rely on Saleor's flexible slug matching
   const slug = params?.id ? decodeURIComponent(params.id as string) : "";
 
-  const channel = process.env.NEXT_PUBLIC_SALEOR_CHANNEL || "default-channel";
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -116,28 +69,6 @@ export function ProductDetailClient({ initialProduct }: { initialProduct: Initia
   const product = initialProduct;
   const loading = false;
   const error = null;
-
-  useEffect(() => {
-    const fetchPageContent = async () => {
-      if (
-        product?.metadata?.find((item) => item?.key === "availability")
-          ?.value === "Please Call" ||
-        product?.metadata?.find((item) => item?.key === "availability")
-          ?.value === "Available"
-      )
-        return;
-      try {
-        const pdpContentRenderer = await fetchPageBySlug(
-          "call-for-availability"
-        );
-        setPDPContent(pdpContentRenderer);
-      } catch (error) {
-        console.error("Error fetching page content:", error);
-      }
-    };
-
-    fetchPageContent();
-  }, []);
 
   const images = product?.media ?? [];
   const firstImageUrl = images[0]?.url ?? "";
