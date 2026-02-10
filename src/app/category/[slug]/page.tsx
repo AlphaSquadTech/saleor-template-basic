@@ -7,7 +7,7 @@ import {
 import { Metadata } from "next";
 import { Suspense } from "react";
 import { getStoreName } from "@/app/utils/branding";
-import { PLSearchProduct, PLSearchProductsResponse } from "@/lib/api/shop";
+import type { PLSearchProductsResponse } from "@/lib/api/shopTypes";
 import { ProductCardServer } from "@/app/components/reuseableUI/productCardServer";
 
 const baseUrl =

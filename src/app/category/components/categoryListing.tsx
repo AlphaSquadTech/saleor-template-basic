@@ -1,5 +1,5 @@
 "use client";
-import type { CategoryAPIType } from "@/lib/api/shop";
+import type { CategoryAPIType } from "@/lib/api/shopTypes";
 import React from "react";
 import { CategoryCard } from "../../components/reuseableUI/categoryCard";
 

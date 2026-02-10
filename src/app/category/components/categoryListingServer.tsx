@@ -1,4 +1,4 @@
-import { CategoryAPIType } from "@/lib/api/shop";
+import type { CategoryAPIType } from "@/lib/api/shopTypes";
 import EmptyState from "../../components/reuseableUI/emptyState";
 import CategoryListingRenderer from "./categoryListing";
 

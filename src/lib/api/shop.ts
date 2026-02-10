@@ -1,3 +1,5 @@
+import "server-only";
+
 const BASE_URL = process.env.NEXT_PUBLIC_SEARCH_URL || "";
 const PARTSLOGIC_URL = process.env.NEXT_PUBLIC_PARTSLOGIC_URL || "";
 const TENANT =

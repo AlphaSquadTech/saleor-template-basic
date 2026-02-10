@@ -20,7 +20,7 @@ import { generateProductSchema, generateBreadcrumbSchema } from "@/lib/schema";
 import ItemInquiryModal from "./components/itemInquiryModal";
 import { ProductInquiryIcon } from "@/app/utils/svgs/productInquiryIcon";
 import { partsLogicClient } from "@/lib/client/partslogic";
-import type { FitmentData } from "@/lib/api/shop";
+import type { FitmentData } from "@/lib/api/shopTypes";
 import type { ProductDetailsByIdData } from "@/graphql/queries/productDetailsById";
 /* No cart/checkout in this template. Product pages support "Request a Quote". */
 
