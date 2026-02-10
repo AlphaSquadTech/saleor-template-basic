@@ -35,6 +35,15 @@ export default function DealerApplicationLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  // Page content is client-rendered (Apollo + forms). Provide a server-rendered, visible H1 for SEO.
+  return (
+    <>
+      <header className="container mx-auto max-w-[1276px] px-4 md:px-6 pt-8">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-[var(--color-secondary-800)]">
+          Dealer Application
+        </h1>
+      </header>
+      {children}
+    </>
+  );
 }
-

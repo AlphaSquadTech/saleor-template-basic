@@ -19,6 +19,14 @@ function toHost(urlOrHost?: string | null): string | null {
 }
 
 function getRemoteImageHosts(): string[] {
+  // Built-in hosts used by default template content.
+  // Keep this list small; prefer env-based allowlisting for tenant-specific assets.
+  const builtInHosts = [
+    "images.unsplash.com",
+    "wsm-saleor-assets.s3.us-west-2.amazonaws.com",
+    "wsmsaleormedia.s3.us-east-1.amazonaws.com",
+  ];
+
   const envHosts = (process.env.NEXT_PUBLIC_IMAGE_HOSTS || "")
     .split(",")
     .map((s) => s.trim())
@@ -29,8 +37,17 @@ function getRemoteImageHosts(): string[] {
   // Common: allow images from the Saleor API hostname (media URLs).
   const saleorHost = toHost(process.env.NEXT_PUBLIC_API_URL);
 
-  return uniq([saleorHost, ...envHosts].filter(Boolean) as string[]);
+  // Common: allow images served from an assets CDN/base URL.
+  const assetsHost = toHost(process.env.NEXT_PUBLIC_ASSETS_BASE_URL);
+
+  return uniq([saleorHost, assetsHost, ...builtInHosts, ...envHosts].filter(Boolean) as string[]);
 }
+
+const HTTP_IMAGE_HOSTS = new Set([
+  // Some upstream content uses http:// links for these buckets.
+  "wsm-saleor-assets.s3.us-west-2.amazonaws.com",
+  "wsmsaleormedia.s3.us-east-1.amazonaws.com",
+]);
 
 const nextConfig: NextConfig = {
   images: {
@@ -43,14 +60,20 @@ const nextConfig: NextConfig = {
         pathname: "/media/**",
       },
       // Explicit allowlist for template consumers
-      ...getRemoteImageHosts().map((hostname) => ({
-        protocol: "https" as const,
-        hostname,
-        pathname: "/**",
-      })),
+      ...getRemoteImageHosts().flatMap((hostname) => {
+        const patterns: Array<{
+          protocol: "https" | "http";
+          hostname: string;
+          pathname: string;
+          port?: string;
+        }> = [{ protocol: "https", hostname, pathname: "/**" }];
+        if (HTTP_IMAGE_HOSTS.has(hostname)) {
+          patterns.push({ protocol: "http", hostname, pathname: "/**" });
+        }
+        return patterns;
+      }),
     ],
   },
 };
 
 export default nextConfig;
-

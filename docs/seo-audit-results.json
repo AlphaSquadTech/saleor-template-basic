@@ -1,0 +1,1127 @@
+{
+  "startedAt": "2026-02-10T17:48:56.571Z",
+  "auditBase": "http://localhost:3010",
+  "siteUrl": "http://localhost:3010",
+  "robots": {
+    "status": 200,
+    "contentType": "text/plain; charset=UTF-8",
+    "body": "# *\nUser-agent: *\nDisallow: /\n\n# Host\nHost: http://localhost:3010\n\n# Sitemaps\nSitemap: http://localhost:3010/sitemap.xml\n"
+  },
+  "sitemap": {
+    "status": 200,
+    "contentType": "application/xml",
+    "bodyHead": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml",
+    "exclusions": {
+      "badCount": 0,
+      "badSample": []
+    }
+  },
+  "urlChecks": [
+    {
+      "loc": "http://localhost:3010",
+      "pathname": "/",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010",
+      "robots": null,
+      "title": "AutoParts Store",
+      "description": "Discover featured products, best sellers, and exclusive offers.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "EntryPoint",
+        "ImageObject",
+        "Organization",
+        "SearchAction",
+        "WebSite"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/products/all",
+      "pathname": "/products/all",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/products/all",
+      "robots": null,
+      "title": "All Products | AutoParts Store",
+      "description": "Browse the complete collection of AutoParts Store products.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "BreadcrumbList",
+        "CollectionPage",
+        "ItemList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/category",
+      "pathname": "/category",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/category",
+      "robots": null,
+      "title": "Categories | AutoParts Store",
+      "description": "Browse product categories organized by type and application.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "BreadcrumbList",
+        "CollectionPage",
+        "ListItem"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/blog",
+      "pathname": "/blog",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/blog",
+      "robots": null,
+      "title": "Blog | AutoParts Store",
+      "description": "Read the latest articles, guides, and tips.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "BreadcrumbList",
+        "CollectionPage",
+        "ListItem"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/contact",
+      "pathname": "/contact",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/contact",
+      "robots": null,
+      "title": "Contact Us | AutoParts Store",
+      "description": "Get in touch with AutoParts Store for product questions, dealer inquiries, or support.",
+      "h1Count": 1,
+      "schemaTypes": []
+    },
+    {
+      "loc": "http://localhost:3010/dealer-application",
+      "pathname": "/dealer-application",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/dealer-application",
+      "robots": null,
+      "title": "Dealer Application | AutoParts Store",
+      "description": "Apply to become an authorized dealer for AutoParts Store.",
+      "h1Count": 1,
+      "schemaTypes": []
+    },
+    {
+      "loc": "http://localhost:3010/locator",
+      "pathname": "/locator",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/locator",
+      "robots": null,
+      "title": "Store Locator | AutoParts Store",
+      "description": "Find a nearby dealer or pickup location for AutoParts Store.",
+      "h1Count": 1,
+      "schemaTypes": []
+    },
+    {
+      "loc": "http://localhost:3010/privacy-policy",
+      "pathname": "/privacy-policy",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/privacy-policy",
+      "robots": null,
+      "title": "Privacy Policy | AutoParts Store",
+      "description": "Read our privacy policy to understand how AutoParts Store collects, uses, and protects your personal information.",
+      "h1Count": 1,
+      "schemaTypes": []
+    },
+    {
+      "loc": "http://localhost:3010/terms-and-conditions",
+      "pathname": "/terms-and-conditions",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/terms-and-conditions",
+      "robots": null,
+      "title": "Terms &amp; Conditions | AutoParts Store",
+      "description": "Read the terms and conditions for using AutoParts Store.",
+      "h1Count": 1,
+      "schemaTypes": []
+    },
+    {
+      "loc": "http://localhost:3010/shipping-returns",
+      "pathname": "/shipping-returns",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/shipping-returns",
+      "robots": null,
+      "title": "Shipping &amp; Returns | AutoParts Store",
+      "description": "Learn about AutoParts Store shipping options, delivery times, return policy, and how to process returns for your products.",
+      "h1Count": 1,
+      "schemaTypes": []
+    },
+    {
+      "loc": "http://localhost:3010/product/2-piece-aluminum-skid-plates-14-chevy-silverado",
+      "pathname": "/product/2-piece-aluminum-skid-plates-14-chevy-silverado",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/2-piece-aluminum-skid-plates-14-chevy-silverado",
+      "robots": null,
+      "title": "2 Piece Aluminum Skid Plates | 14+ Chevy Silverado | AutoParts Store",
+      "description": "2 Piece Aluminum Skid Plates | 14+ Chevy Silverado - Our Thick Extreme duty skid plates are 6061 Aluminum made to protect the underside of your truck and preven",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/category/rigid-lighting",
+      "pathname": "/category/rigid-lighting",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/category/rigid-lighting",
+      "robots": null,
+      "title": "Rigid Lighting | AutoParts Store",
+      "description": "Browse our Rigid Lighting collection. Find the best products in Rigid Lighting category.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "BreadcrumbList",
+        "ItemList",
+        "ListItem",
+        "Offer",
+        "Product",
+        "WebPage"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/blog/2024-chevy-silverado-fox-factory-edition-x-baja-kits",
+      "pathname": "/blog/2024-chevy-silverado-fox-factory-edition-x-baja-kits",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/blog/2024-chevy-silverado-fox-factory-edition-x-baja-kits",
+      "robots": null,
+      "title": "2024 Chevy Silverado FOX Factory Edition x Baja Kits | AutoParts Store",
+      "description": "2024 Chevy Silverado FOX Factory Edition x Baja Kits",
+      "h1Count": 1,
+      "schemaTypes": [
+        "BlogPosting",
+        "BreadcrumbList",
+        "ListItem"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/site-map",
+      "pathname": "/site-map",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/site-map",
+      "robots": null,
+      "title": "Site Map | AutoParts Store",
+      "description": "Explore the comprehensive site map of AutoParts Store to easily navigate through all sections and find what you&#x27;re looking for quickly.",
+      "h1Count": 1,
+      "schemaTypes": []
+    },
+    {
+      "loc": "http://localhost:3010/frequently-asked-questions",
+      "pathname": "/frequently-asked-questions",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/frequently-asked-questions",
+      "robots": null,
+      "title": "Frequently Asked Questions | AutoParts Store",
+      "description": "Find answers to frequently asked questions about products, ordering, shipping, returns, and compatibility.",
+      "h1Count": 1,
+      "schemaTypes": []
+    },
+    {
+      "loc": "http://localhost:3010/product/2-seat-cage-canam-maverick-x3",
+      "pathname": "/product/2-seat-cage-canam-maverick-x3",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/2-seat-cage-canam-maverick-x3",
+      "robots": null,
+      "title": "2 Seat Cage | CanAm Maverick X3 | AutoParts Store",
+      "description": "2 Seat Cage | CanAm Maverick X3 - All cages come raw standard. Photos shown with STEEL IT coating which can be purchased on this website.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/2-seat-weld-it-yourself-cage-canam-maverick-x3",
+      "pathname": "/product/2-seat-weld-it-yourself-cage-canam-maverick-x3",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/2-seat-weld-it-yourself-cage-canam-maverick-x3",
+      "robots": null,
+      "title": "2 Seat Weld it Yourself Cage | CanAm Maverick X3 | AutoParts Store",
+      "description": "Shop 2 Seat Weld it Yourself Cage | CanAm Maverick X3 at AutoParts Store. Maverick X3 RS (Model) with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/2017-ford-raptor-2-coil-spring-perch-kit",
+      "pathname": "/product/2017-ford-raptor-2-coil-spring-perch-kit",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/2017-ford-raptor-2-coil-spring-perch-kit",
+      "robots": null,
+      "title": "2017+ Ford Raptor 2&quot; Coil Spring Perch Kit | AutoParts Store",
+      "description": "2017+ Ford Raptor 2&quot; Coil Spring Perch Kit - On the first generation Raptor, there were three spring perch options included at the factory. While Ford never off",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/2019-2026-gm-silverado-sierra-1500-2wd-long-travel-ifs-suspension-kit-with-out-shocks-or-bump-stops",
+      "pathname": "/product/2019-2026-gm-silverado-sierra-1500-2wd-long-travel-ifs-suspension-kit-with-out-shocks-or-bump-stops",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/2019-2026-gm-silverado-sierra-1500-2wd-long-travel-ifs-suspension-kit-with-out-shocks-or-bump-stops",
+      "robots": null,
+      "title": "2019-2026 GM Silverado / Sierra 1500 2WD Long travel IFS suspension kit with out shocks or bump stops | AutoParts Store",
+      "description": "2019-2026 GM Silverado / Sierra 1500 2WD Long travel IFS suspension kit with out shocks or bump stops - Warranty: https://www.bajakits.com/p-36906-warranty.html",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/4-seat-cage-canam-maverick-x3",
+      "pathname": "/product/4-seat-cage-canam-maverick-x3",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/4-seat-cage-canam-maverick-x3",
+      "robots": null,
+      "title": "4 Seat Cage | CanAm Maverick X3 | AutoParts Store",
+      "description": "4 Seat Cage | CanAm Maverick X3 - All cages come raw standard. Photos shown with STEEL IT coating which can be purchased on this website.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/4-seat-weld-it-yourself-cage-canam-maverick-x3",
+      "pathname": "/product/4-seat-weld-it-yourself-cage-canam-maverick-x3",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/4-seat-weld-it-yourself-cage-canam-maverick-x3",
+      "robots": null,
+      "title": "4 Seat Weld it Yourself Cage | CanAm Maverick X3 | AutoParts Store",
+      "description": "Shop 4 Seat Weld it Yourself Cage | CanAm Maverick X3 at AutoParts Store. Maverick X3 RS (Model) with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/4inch-lift-spindle-09-14-ford-f150-2wd",
+      "pathname": "/product/4inch-lift-spindle-09-14-ford-f150-2wd",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/4inch-lift-spindle-09-14-ford-f150-2wd",
+      "robots": null,
+      "title": "4inch Lift Spindle | 09-14 Ford F150 2WD | AutoParts Store",
+      "description": "4inch Lift Spindle | 09-14 Ford F150 2WD - The Baja Kits fabricated upright is properly engineered to lift the front end without creating these negative effects",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/4inch-lift-spindle-09-2wd-ford-f150",
+      "pathname": "/product/4inch-lift-spindle-09-2wd-ford-f150",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/4inch-lift-spindle-09-2wd-ford-f150",
+      "robots": null,
+      "title": "4inch Lift Spindle | 09+  2WD Ford F150 | AutoParts Store",
+      "description": "4inch Lift Spindle | 09+  2WD Ford F150 - Baja Kits releases new fabricated upright for 2009 Ford F-150 2WD Baja Kits has just released its latest product, a bo",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/4inch-lift-spindle-15-ford-f150-2wd",
+      "pathname": "/product/4inch-lift-spindle-15-ford-f150-2wd",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/4inch-lift-spindle-15-ford-f150-2wd",
+      "robots": null,
+      "title": "4inch Lift Spindle | 15+ Ford F150 2WD | AutoParts Store",
+      "description": "4inch Lift Spindle | 15+ Ford F150 2WD - Baja Kits has just released its latest product, a bolt-on fabricated upright that levels the front end of your 2015+ 2w",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/72-king-shocks-2-5-front-ibp-can-am-maverick-x3-rs-pricing-per-shock",
+      "pathname": "/product/72-king-shocks-2-5-front-ibp-can-am-maverick-x3-rs-pricing-per-shock",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/72-king-shocks-2-5-front-ibp-can-am-maverick-x3-rs-pricing-per-shock",
+      "robots": null,
+      "title": "72&quot;  King Shocks 2.5 Front IBP  | Can-Am Maverick X3 RS **Pricing Per Shock** | AutoParts Store",
+      "description": "72&quot;  King Shocks 2.5 Front IBP  | Can-Am Maverick X3 RS **Pricing Per Shock** - Features: Lightweight hard anodized 6063 aluminum alloy reservoirs dissipate hea",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/72-king-shocks-3-0-rear-ibp-can-am-maverick-x3-rs-pricing-per-shock",
+      "pathname": "/product/72-king-shocks-3-0-rear-ibp-can-am-maverick-x3-rs-pricing-per-shock",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/72-king-shocks-3-0-rear-ibp-can-am-maverick-x3-rs-pricing-per-shock",
+      "robots": null,
+      "title": "72&quot;  King Shocks 3.0 Rear IBP | Can-Am Maverick X3 RS **Pricing Per Shock** | AutoParts Store",
+      "description": "72&quot;  King Shocks 3.0 Rear IBP | Can-Am Maverick X3 RS **Pricing Per Shock** - Features: Lightweight hard anodized 6063 aluminum alloy reservoirs dissipate heat",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/aluminum-skid-plates-ford-f150",
+      "pathname": "/product/aluminum-skid-plates-ford-f150",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/aluminum-skid-plates-ford-f150",
+      "robots": null,
+      "title": "Aluminum Skid Plates | Ford F150 | AutoParts Store",
+      "description": "Shop Aluminum Skid Plates | Ford F150 at AutoParts Store. F-150 with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/baja-kits-bjk-cc0pr15-xxxx",
+      "pathname": "/product/baja-kits-bjk-cc0pr15-xxxx",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/baja-kits-bjk-cc0pr15-xxxx",
+      "robots": null,
+      "title": "Baja Kits BJK-CC0PR15-XXXX | AutoParts Store",
+      "description": "Shop Baja Kits BJK-CC0PR15-XXXX at AutoParts Store. Coming Soon with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/baja-kits-bjk-tt0p15-g000",
+      "pathname": "/product/baja-kits-bjk-tt0p15-g000",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/baja-kits-bjk-tt0p15-g000",
+      "robots": null,
+      "title": "Baja Kits BJK-TT0P15-G000 | AutoParts Store",
+      "description": "Shop Baja Kits BJK-TT0P15-G000 at AutoParts Store. Coming Soon with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/baja-kits-bjk-tt0pr05-xxxx",
+      "pathname": "/product/baja-kits-bjk-tt0pr05-xxxx",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/baja-kits-bjk-tt0pr05-xxxx",
+      "robots": null,
+      "title": "Baja Kits BJK-TT0PR05-XXXX | AutoParts Store",
+      "description": "Shop Baja Kits BJK-TT0PR05-XXXX at AutoParts Store. Coming Soon with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/baja-kits-performance-leaf-spring-set-1-5-lift-2019-2024-chevy-silverado-gmc-sierra",
+      "pathname": "/product/baja-kits-performance-leaf-spring-set-1-5-lift-2019-2024-chevy-silverado-gmc-sierra",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/baja-kits-performance-leaf-spring-set-1-5-lift-2019-2024-chevy-silverado-gmc-sierra",
+      "robots": null,
+      "title": "Baja kits Performance Leaf Spring set | 1.5&quot; lift  | 2019-2024 Chevy Silverado / GMC Sierra | AutoParts Store",
+      "description": "Baja kits Performance Leaf Spring set | 1.5&quot; lift  | 2019-2024 Chevy Silverado / GMC Sierra - GM 1500 Off-Road Performance Leaf Spring Kit Engineered for seriou",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/baja-kits-performance-leaf-spring-set-1-5-lift-2025-2026-chevy-silverado-gmc-sierra",
+      "pathname": "/product/baja-kits-performance-leaf-spring-set-1-5-lift-2025-2026-chevy-silverado-gmc-sierra",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/baja-kits-performance-leaf-spring-set-1-5-lift-2025-2026-chevy-silverado-gmc-sierra",
+      "robots": null,
+      "title": "Baja kits Performance Leaf Spring set | 1.5&quot; lift  | 2025-2026 Chevy Silverado / GMC Sierra | AutoParts Store",
+      "description": "Baja kits Performance Leaf Spring set | 1.5&quot; lift  | 2025-2026 Chevy Silverado / GMC Sierra - GM 1500 Off-Road Performance Leaf Spring Kit Engineered for seriou",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/baja-kits-performance-leaf-spring-set-2007-2018-chevy-silverado-gmc-sierra-2019-2024-gm-trail-boss-zr2-at4-at4x-2-oe-block",
+      "pathname": "/product/baja-kits-performance-leaf-spring-set-2007-2018-chevy-silverado-gmc-sierra-2019-2024-gm-trail-boss-zr2-at4-at4x-2-oe-block",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/baja-kits-performance-leaf-spring-set-2007-2018-chevy-silverado-gmc-sierra-2019-2024-gm-trail-boss-zr2-at4-at4x-2-oe-block",
+      "robots": null,
+      "title": "Baja kits Performance Leaf Spring set | 2007-2018 Chevy Silverado / GMC Sierra | 2019-2024 GM Trail Boss, ZR2 AT4, AT4X ( 2&quot; OE block) | AutoParts Store",
+      "description": "Baja kits Performance Leaf Spring set | 2007-2018 Chevy Silverado / GMC Sierra | 2019-2024 GM Trail Boss, ZR2 AT4, AT4X ( 2&quot; OE block) - GM 1500 Off-Road Perfor",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/baja-kits-rear-shackle-2019-2026-chevy-silverado-gmc-sierra-1500s",
+      "pathname": "/product/baja-kits-rear-shackle-2019-2026-chevy-silverado-gmc-sierra-1500s",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/baja-kits-rear-shackle-2019-2026-chevy-silverado-gmc-sierra-1500s",
+      "robots": null,
+      "title": "Baja Kits Rear Shackle | 2019 - 2026 Chevy Silverado / GMC Sierra 1500&#x27;s | AutoParts Store",
+      "description": "Baja Kits Rear Shackle | 2019 - 2026 Chevy Silverado / GMC Sierra 1500&#x27;s - These made in the USA shackles feature Trophy truck inspired bind free Delrin bushing",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/baja-kits-t-shirt",
+      "pathname": "/product/baja-kits-t-shirt",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/baja-kits-t-shirt",
+      "robots": null,
+      "title": "Baja Kits T-Shirt | AutoParts Store",
+      "description": "Baja Kits T-Shirt - Baja Kits &quot;Engineered For Offroad&quot; T-Shirt. Comes in black with yellow and white printing on it available in S, M, L, XL, and XXL.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/baja-kits-white-logo-snap-back-black",
+      "pathname": "/product/baja-kits-white-logo-snap-back-black",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/baja-kits-white-logo-snap-back-black",
+      "robots": null,
+      "title": "Baja Kits - White Logo Snap Back - Black | AutoParts Store",
+      "description": "Shop Baja Kits - White Logo Snap Back - Black at AutoParts Store. Builder Parts/Misc with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/baja-kits-white-logo-snap-back-camo",
+      "pathname": "/product/baja-kits-white-logo-snap-back-camo",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/baja-kits-white-logo-snap-back-camo",
+      "robots": null,
+      "title": "Baja Kits - White Logo Snap Back - Camo | AutoParts Store",
+      "description": "Shop Baja Kits - White Logo Snap Back - Camo at AutoParts Store. Builder Parts/Misc with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/bajakits-fresh-t-shirt",
+      "pathname": "/product/bajakits-fresh-t-shirt",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/bajakits-fresh-t-shirt",
+      "robots": null,
+      "title": "Bajakits &quot; Fresh &quot; T-shirt | AutoParts Store",
+      "description": "Shop Bajakits &quot; Fresh &quot; T-shirt at AutoParts Store. Builder Parts/Misc with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/bajakits-lightning-t-shirt",
+      "pathname": "/product/bajakits-lightning-t-shirt",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/bajakits-lightning-t-shirt",
+      "robots": null,
+      "title": "Bajakits &quot; Lightning &quot; T-Shirt | AutoParts Store",
+      "description": "Bajakits &quot; Lightning &quot; T-Shirt - Heather Grey - Cotton/Polyester Blend",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/bajakits-t-shirt-polystrike",
+      "pathname": "/product/bajakits-t-shirt-polystrike",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/bajakits-t-shirt-polystrike",
+      "robots": null,
+      "title": "Bajakits T-Shirt Polystrike | AutoParts Store",
+      "description": "Shop Bajakits T-Shirt Polystrike at AutoParts Store. Builder Parts/Misc with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/bajakits-t-shirt-v2",
+      "pathname": "/product/bajakits-t-shirt-v2",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/bajakits-t-shirt-v2",
+      "robots": null,
+      "title": "Bajakits T-Shirt V2 | AutoParts Store",
+      "description": "Shop Bajakits T-Shirt V2 at AutoParts Store. Builder Parts/Misc with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/billet-lower-trailing-arms-2022-2026-toyota-tundra-2022-2025-toyota-sequoia-2024-2025-toyota-tacoma",
+      "pathname": "/product/billet-lower-trailing-arms-2022-2026-toyota-tundra-2022-2025-toyota-sequoia-2024-2025-toyota-tacoma",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/billet-lower-trailing-arms-2022-2026-toyota-tundra-2022-2025-toyota-sequoia-2024-2025-toyota-tacoma",
+      "robots": null,
+      "title": "Billet Lower Trailing Arms | 2022 - 2026 Toyota Tundra / 2022 - 2025 Toyota Sequoia / 2024 - 2025 Toyota Tacoma | AutoParts Store",
+      "description": "Billet Lower Trailing Arms | 2022 - 2026 Toyota Tundra / 2022 - 2025 Toyota Sequoia / 2024 - 2025 Toyota Tacoma - Our Billet Trailing arms are machined in house",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/billet-pivot-plates-2022-2026-toyota-tundra-2022-2025-sequoia",
+      "pathname": "/product/billet-pivot-plates-2022-2026-toyota-tundra-2022-2025-sequoia",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/billet-pivot-plates-2022-2026-toyota-tundra-2022-2025-sequoia",
+      "robots": null,
+      "title": "Billet Pivot Plates | 2022 - 2026 Toyota Tundra, 2022 - 2025 Sequoia  | AutoParts Store",
+      "description": "Billet Pivot Plates | 2022 - 2026 Toyota Tundra, 2022 - 2025 Sequoia  - Billet Pivot Plates for 2022–2026 Toyota Tundra Give your Tundra a premium touch of styl",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/billet-pivot-plates-with-control-arm-pivot-skid-2021-2025-ford-bronco",
+      "pathname": "/product/billet-pivot-plates-with-control-arm-pivot-skid-2021-2025-ford-bronco",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/billet-pivot-plates-with-control-arm-pivot-skid-2021-2025-ford-bronco",
+      "robots": null,
+      "title": "Billet Pivot Plates with control arm pivot skid | 2021 - 2025 Ford Bronco  | AutoParts Store",
+      "description": "Billet Pivot Plates with control arm pivot skid | 2021 - 2025 Ford Bronco  - These Made in the USA 6061 T-6 aluminum pivot plates are sure to grab attention as",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/billet-radius-arms-ford-f250-f350",
+      "pathname": "/product/billet-radius-arms-ford-f250-f350",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/billet-radius-arms-ford-f250-f350",
+      "robots": null,
+      "title": "Billet Radius Arms | Ford F250/F350 | AutoParts Store",
+      "description": "Billet Radius Arms | Ford F250/F350 - The Baja Kits Advantage: - Huge Billet Aluminum Machined in house on our CNC Mill - 1&quot; Hi angle Trophy Truck grade uniball",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/billet-rear-trailing-arms-2021-2025-ford-bronco-black-anodize",
+      "pathname": "/product/billet-rear-trailing-arms-2021-2025-ford-bronco-black-anodize",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/billet-rear-trailing-arms-2021-2025-ford-bronco-black-anodize",
+      "robots": null,
+      "title": "Billet  Rear Trailing Arms | 2021 - 2025 Ford Bronco | Black anodize | AutoParts Store",
+      "description": "Billet  Rear Trailing Arms | 2021 - 2025 Ford Bronco | Black anodize - The Baja Kits Advantage: - Billet Aluminum Machined in house on our CNC Mill - Increases",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/billet-rear-upper-links-2021-2025-ford-bronco",
+      "pathname": "/product/billet-rear-upper-links-2021-2025-ford-bronco",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/billet-rear-upper-links-2021-2025-ford-bronco",
+      "robots": null,
+      "title": "Billet  Rear Upper Links | 2021 - 2025 Ford Bronco | AutoParts Store",
+      "description": "Billet  Rear Upper Links | 2021 - 2025 Ford Bronco - These Made in the USA upper links feature Uni-balls with stainless steel mis-alignment spacers. They bolt d",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/billet-rear-upper-links-2022-2026-toyota-tundra-2022-2025-toyota-sequoia-2024-2025-toyota-tacoma",
+      "pathname": "/product/billet-rear-upper-links-2022-2026-toyota-tundra-2022-2025-toyota-sequoia-2024-2025-toyota-tacoma",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/billet-rear-upper-links-2022-2026-toyota-tundra-2022-2025-toyota-sequoia-2024-2025-toyota-tacoma",
+      "robots": null,
+      "title": "Billet Rear Upper Links | 2022 - 2026 Toyota Tundra / 2022 - 2025 Toyota Sequoia / 2024 - 2025 Toyota Tacoma | AutoParts Store",
+      "description": "Billet Rear Upper Links | 2022 - 2026 Toyota Tundra / 2022 - 2025 Toyota Sequoia / 2024 - 2025 Toyota Tacoma - Our Billet Upper links are machined in house from",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/billet-trailing-arms-2008-2021-toyota-lc200-2022-2024-lc300",
+      "pathname": "/product/billet-trailing-arms-2008-2021-toyota-lc200-2022-2024-lc300",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/billet-trailing-arms-2008-2021-toyota-lc200-2022-2024-lc300",
+      "robots": null,
+      "title": "Billet Trailing Arms | 2008-2021 Toyota LC200, 2022-2024 LC300 | AutoParts Store",
+      "description": "Billet Trailing Arms | 2008-2021 Toyota LC200, 2022-2024 LC300 - Our Billet Trailing arms are machined in house from a Solid block of 6061 Billet Aluminum Perfo",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/billet-upper-arms-08-21-toyota-land-cruiser-lc200",
+      "pathname": "/product/billet-upper-arms-08-21-toyota-land-cruiser-lc200",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/billet-upper-arms-08-21-toyota-land-cruiser-lc200",
+      "robots": null,
+      "title": "Billet Upper Arms | 08-21 Toyota Land Cruiser LC200 | AutoParts Store",
+      "description": "Shop Billet Upper Arms | 08-21 Toyota Land Cruiser LC200 at AutoParts Store. Front Chase Kits with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/billet-upper-arms-22-toyota-land-cruiser-lc300",
+      "pathname": "/product/billet-upper-arms-22-toyota-land-cruiser-lc300",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/billet-upper-arms-22-toyota-land-cruiser-lc300",
+      "robots": null,
+      "title": "Billet Upper Arms | 22+ Toyota Land Cruiser LC300 | AutoParts Store",
+      "description": "Shop Billet Upper Arms | 22+ Toyota Land Cruiser LC300 at AutoParts Store. Land Cruiser LC300 with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/billet-upper-control-arm-2010-2014-and-2017-2020-ford-raptor-f-150",
+      "pathname": "/product/billet-upper-control-arm-2010-2014-and-2017-2020-ford-raptor-f-150",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/billet-upper-control-arm-2010-2014-and-2017-2020-ford-raptor-f-150",
+      "robots": null,
+      "title": "Billet Upper Control Arm | 2010-2014 and 2017-2020 Ford Raptor F-150 | AutoParts Store",
+      "description": "Billet Upper Control Arm | 2010-2014 and 2017-2020 Ford Raptor F-150 - Baja Kits Billet Upper Control Arms – Black Anodized Upgrade your suspension performance",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/billet-upper-control-arm-stock-width-2022-2026-toyota-tundra-sequoia-2022-2025",
+      "pathname": "/product/billet-upper-control-arm-stock-width-2022-2026-toyota-tundra-sequoia-2022-2025",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/billet-upper-control-arm-stock-width-2022-2026-toyota-tundra-sequoia-2022-2025",
+      "robots": null,
+      "title": "Billet Upper Control Arm - Stock Width | 2022 - 2026 Toyota Tundra, Sequoia 2022 - 2025 | AutoParts Store",
+      "description": "Billet Upper Control Arm - Stock Width | 2022 - 2026 Toyota Tundra, Sequoia 2022 - 2025 - Features: CAD designed and engineered Black Anodize finish Billet mach",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/bolt-on-front-bumper-15-17-ford-f150",
+      "pathname": "/product/bolt-on-front-bumper-15-17-ford-f150",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/bolt-on-front-bumper-15-17-ford-f150",
+      "robots": null,
+      "title": "Bolt on Front Bumper | 15-17 Ford F150 | AutoParts Store",
+      "description": "Bolt on Front Bumper | 15-17 Ford F150 - We use chromoly tubing and laser cut steel to give you that right look but give you strength and durability - Designed",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/boxed-bushing-upper-control-arm-22-toyota-land-cruiser-lc300",
+      "pathname": "/product/boxed-bushing-upper-control-arm-22-toyota-land-cruiser-lc300",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/boxed-bushing-upper-control-arm-22-toyota-land-cruiser-lc300",
+      "robots": null,
+      "title": "Boxed Bushing Upper Control Arm | 22+ Toyota Land Cruiser LC300 | AutoParts Store",
+      "description": "Shop Boxed Bushing Upper Control Arm | 22+ Toyota Land Cruiser LC300 at AutoParts Store. Land Cruiser LC300 with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/boxed-lower-control-arm-08-21-toyota-land-cruiser-lc200",
+      "pathname": "/product/boxed-lower-control-arm-08-21-toyota-land-cruiser-lc200",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/boxed-lower-control-arm-08-21-toyota-land-cruiser-lc200",
+      "robots": null,
+      "title": "Boxed Lower Control Arm | 08-21 Toyota Land Cruiser LC200 | AutoParts Store",
+      "description": "Shop Boxed Lower Control Arm | 08-21 Toyota Land Cruiser LC200 at AutoParts Store. Front Chase Kits with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/boxed-lower-control-arm-09-14-ford-raptor",
+      "pathname": "/product/boxed-lower-control-arm-09-14-ford-raptor",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/boxed-lower-control-arm-09-14-ford-raptor",
+      "robots": null,
+      "title": "Boxed Lower Control Arm | 09-14 Ford Raptor | AutoParts Store",
+      "description": "Shop Boxed Lower Control Arm | 09-14 Ford Raptor at AutoParts Store. Chase Kits with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/boxed-lower-control-arm-22-toyota-land-cruiser-lc300",
+      "pathname": "/product/boxed-lower-control-arm-22-toyota-land-cruiser-lc300",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/boxed-lower-control-arm-22-toyota-land-cruiser-lc300",
+      "robots": null,
+      "title": "Boxed Lower Control Arm | 22+ Toyota Land Cruiser LC300 | AutoParts Store",
+      "description": "Shop Boxed Lower Control Arm | 22+ Toyota Land Cruiser LC300 at AutoParts Store. Land Cruiser LC300 with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/boxed-rod-end-upper-arm-08-21-toyota-land-cruiser-lc200",
+      "pathname": "/product/boxed-rod-end-upper-arm-08-21-toyota-land-cruiser-lc200",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/boxed-rod-end-upper-arm-08-21-toyota-land-cruiser-lc200",
+      "robots": null,
+      "title": "Boxed Rod End Upper Arm | 08-21 Toyota Land Cruiser LC200 | AutoParts Store",
+      "description": "Shop Boxed Rod End Upper Arm | 08-21 Toyota Land Cruiser LC200 at AutoParts Store. Front Chase Kits with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    },
+    {
+      "loc": "http://localhost:3010/product/boxed-rod-end-upper-control-arms-22-toyota-land-cruiser-lc300",
+      "pathname": "/product/boxed-rod-end-upper-control-arms-22-toyota-land-cruiser-lc300",
+      "status": 200,
+      "redirectLocation": null,
+      "contentType": "text/html; charset=utf-8",
+      "canonical": "http://localhost:3010/product/boxed-rod-end-upper-control-arms-22-toyota-land-cruiser-lc300",
+      "robots": null,
+      "title": "Boxed Rod End Upper Control Arms | 22+ Toyota Land Cruiser LC300 | AutoParts Store",
+      "description": "Shop Boxed Rod End Upper Control Arms | 22+ Toyota Land Cruiser LC300 at AutoParts Store. Land Cruiser LC300 with fast shipping.",
+      "h1Count": 1,
+      "schemaTypes": [
+        "Brand",
+        "BreadcrumbList",
+        "ListItem",
+        "Offer",
+        "Product"
+      ]
+    }
+  ],
+  "summary": {
+    "urlCount": 1930,
+    "sampled": 60,
+    "non200": 0,
+    "redirects": 0,
+    "missingCanonical": 0,
+    "canonicalNotAbsolute": 0,
+    "missingTitle": 0,
+    "missingDescription": 0,
+    "duplicateTitles": 0,
+    "duplicateDescriptions": 0,
+    "missingH1": 0,
+    "multipleH1": 0,
+    "missingSchemaProductOnPdp": 0,
+    "missingSchemaOrgOnHome": 0,
+    "missingSchemaBreadcrumb": 0,
+    "searchNotNoindex": 0
+  }
+}

@@ -27,6 +27,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const normalize = (s: string) =>
+    s
+      .replace(/<[^>]*>/g, "")
+      .replace(/&nbsp;/gi, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
   // Parse description for meta - strip HTML and limit length
   let metaDescription = "";
   try {
@@ -36,20 +43,39 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         (b: { type: string }) => b.type === "paragraph"
       );
       if (textBlock?.data?.text) {
-        metaDescription = textBlock.data.text
-          .replace(/<[^>]*>/g, "")
-          .substring(0, 160);
+        metaDescription = normalize(String(textBlock.data.text)).substring(
+          0,
+          160
+        );
       }
     }
   } catch {
-    metaDescription = (product.description || "")
-      .replace(/<[^>]*>/g, "")
-      .substring(0, 160);
+    metaDescription = normalize(String(product.description || "")).substring(
+      0,
+      160
+    );
   }
-  if (!metaDescription) {
+
+  // Heuristics: avoid blank/placeholder descriptions which cause duplicates and "empty description" meta tags.
+  const looksPlaceholder =
+    metaDescription.length < 30 ||
+    /^info coming soon$/i.test(metaDescription) ||
+    /^new product info coming soon/i.test(metaDescription);
+
+  if (!metaDescription || looksPlaceholder) {
     metaDescription = `Shop ${product.name} at ${storeName}. ${
       product.category?.name || "Quality products"
     } with fast shipping.`;
+  } else {
+    // Help uniqueness across similar SKUs: include the product name in the meta description.
+    const lower = metaDescription.toLowerCase();
+    const nameLower = product.name.toLowerCase();
+    if (!lower.startsWith(nameLower)) {
+      metaDescription = `${product.name} - ${metaDescription}`.substring(
+        0,
+        160
+      );
+    }
   }
 
   const productUrl = `${baseUrl.replace(/\/$/, "")}/product/${slug}`;
