@@ -20,6 +20,7 @@ import "./globals.css";
 import GoogleAnalyticsProvider from "./components/providers/GoogleAnalyticsProvider";
 import { getStoreName } from "./utils/branding";
 import YMMStatusProvider from "./components/providers/YMMStatusProvider";
+import ClientPopups from "./components/newsletter/ClientPopups";
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -106,6 +107,7 @@ export default async function RootLayout({
                 <GoogleAnalyticsProvider>
                   <GoogleTagManagerProvider>
                     <YMMStatusProvider />
+                    <ClientPopups />
                     <Layout>{children}</Layout>
                   </GoogleTagManagerProvider>
                 </GoogleAnalyticsProvider>
