@@ -7,6 +7,7 @@ import {
 import { Metadata } from "next";
 import { Suspense } from "react";
 import { getStoreName } from "@/app/utils/branding";
+import { ProductCardServer } from "@/app/components/reuseableUI/productCardServer";
 
 const baseUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
@@ -19,6 +20,22 @@ const ogImageUrl = `${baseUrl.replace(/\/$/, "")}/og-image.png`;
 
 const PARTSLOGIC_URL = process.env.NEXT_PUBLIC_PARTSLOGIC_URL || "";
 const INITIAL_ITEMS_PER_PAGE = 20;
+
+function firstParam(value: string | string[] | undefined): string | undefined {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+function parsePositiveInt(
+  value: string | undefined,
+  fallback: number,
+  opts?: { min?: number; max?: number }
+) {
+  const n = value ? Number.parseInt(value, 10) : Number.NaN;
+  const min = opts?.min ?? 1;
+  const max = opts?.max ?? 100;
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(max, Math.max(min, n));
+}
 
 export const metadata: Metadata = {
   title,
@@ -52,7 +69,15 @@ export const metadata: Metadata = {
 export const revalidate = 300; // Cache for 5 minutes (ISR)
 
 // Server-side function to fetch initial products for SSR
-async function fetchInitialProducts(perPage: number = INITIAL_ITEMS_PER_PAGE) {
+async function fetchInitialProducts(args: {
+  page: number;
+  perPage: number;
+  q?: string;
+  fitmentPairs?: string;
+  categorySlugs?: string[];
+  brandSlugs?: string[];
+  sortBy?: string;
+}) {
   if (!PARTSLOGIC_URL) {
     console.warn("PARTSLOGIC_URL not configured, skipping initial product fetch");
     return null;
@@ -60,9 +85,16 @@ async function fetchInitialProducts(perPage: number = INITIAL_ITEMS_PER_PAGE) {
 
   try {
     const params = new URLSearchParams({
-      page: "1",
-      per_page: String(perPage),
+      page: String(args.page),
+      per_page: String(args.perPage),
     });
+
+    if (args.q) params.set("q", args.q);
+    if (args.fitmentPairs) params.set("fitment_pairs", args.fitmentPairs);
+    if (args.sortBy) params.set("sort_by", args.sortBy);
+
+    args.categorySlugs?.forEach((slug) => params.append("category_slug", slug));
+    args.brandSlugs?.forEach((slug) => params.append("brand_slug", slug));
 
     const response = await fetch(
       `${PARTSLOGIC_URL}/api/search/products?${params.toString()}`,
@@ -87,9 +119,46 @@ async function fetchInitialProducts(perPage: number = INITIAL_ITEMS_PER_PAGE) {
   }
 }
 
-export default async function ProductsPage() {
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const sp = await searchParams;
+  const page = parsePositiveInt(firstParam(sp.page), 1, { min: 1 });
+  const perPage = parsePositiveInt(
+    firstParam(sp.per_page),
+    INITIAL_ITEMS_PER_PAGE,
+    { min: 1, max: 100 }
+  );
+  const q = firstParam(sp.q)?.trim() || undefined;
+  const fitmentPairs =
+    firstParam(sp.fitment_pairs)?.trim() || undefined;
+  const sortBy = firstParam(sp.sort_by)?.trim() || undefined;
+
+  const categorySlugsRaw = sp.category_slug;
+  const brandSlugsRaw = sp.brand_slug;
+  const categorySlugs = Array.isArray(categorySlugsRaw)
+    ? categorySlugsRaw
+    : categorySlugsRaw
+      ? [categorySlugsRaw]
+      : undefined;
+  const brandSlugs = Array.isArray(brandSlugsRaw)
+    ? brandSlugsRaw
+    : brandSlugsRaw
+      ? [brandSlugsRaw]
+      : undefined;
+
   // Fetch initial products server-side for SSR (critical for SEO)
-  const initialData = await fetchInitialProducts(INITIAL_ITEMS_PER_PAGE);
+  const initialData = await fetchInitialProducts({
+    page,
+    perPage,
+    q,
+    fitmentPairs,
+    sortBy,
+    categorySlugs,
+    brandSlugs,
+  });
 
   // Generate schema.org structured data
   const collectionSchema = generateCollectionPageSchema(
@@ -139,6 +208,55 @@ export default async function ProductsPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
         />
       )}
+
+      {/* SSR baseline product grid for SEO/no-JS. Hidden once JS is available. */}
+      {Array.isArray(initialData?.products) && (
+        <section className="container mx-auto mt-8 px-4 md:px-6 ssr-only-grid">
+          {initialData.products.length === 0 ? (
+            <div className="text-center py-12">
+              <h2 className="text-xl font-semibold text-[var(--color-secondary-800)]">
+                No products found
+              </h2>
+              <p className="mt-2 text-[var(--color-secondary-600)]">
+                Try adjusting your filters or search criteria.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {initialData.products.map(
+                (p: {
+                  id: string;
+                  name: string;
+                  slug?: string;
+                  media?: Array<{ url: string }>;
+                  category?: { name: string } | null;
+                  price_min?: number | null;
+                  price_max?: number | null;
+                  skus?: Array<string> | string;
+                }) => {
+                  const href = `/product/${encodeURIComponent(p.slug || "")}`;
+                  const imageUrl = p.media?.[0]?.url || "";
+                  const price = p.price_min || 0;
+                  return (
+                    <ProductCardServer
+                      key={p.id}
+                      id={p.id}
+                      name={p.name}
+                      image={imageUrl}
+                      href={href}
+                      price={price}
+                      category={p.category?.name || ""}
+                      onSale={(p.price_max || 0) > (p.price_min || 0)}
+                      skus={p.skus}
+                    />
+                  );
+                }
+              )}
+            </div>
+          )}
+        </section>
+      )}
+
       <Suspense
         fallback={
           <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg">
@@ -147,9 +265,9 @@ export default async function ProductsPage() {
         }
       >
         <AllProductsClient
-          initialProducts={initialData?.products || null}
-          initialPagination={initialData?.pagination || null}
-          initialFacets={initialData?.facets || null}
+          initialProducts={initialData?.products ?? null}
+          initialPagination={initialData?.pagination ?? null}
+          initialFacets={initialData?.facets ?? null}
         />
       </Suspense>
     </>

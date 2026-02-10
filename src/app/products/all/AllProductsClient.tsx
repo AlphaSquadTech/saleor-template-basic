@@ -117,9 +117,12 @@ function AllProductsClientInner({
   const router = useRouter();
   const pathname = usePathname();
   const topRef = useRef<HTMLDivElement>(null);
+  const skipFirstFetchRef = useRef<boolean>(false);
 
   // Use initial data if provided (from SSR)
-  const hasInitialData = initialProducts && initialProducts.length > 0;
+  const hasInitialData =
+    Array.isArray(initialProducts) && initialPagination != null;
+  skipFirstFetchRef.current = skipFirstFetchRef.current || hasInitialData;
 
   const selectedPairs = searchParams?.get("fitment_pairs") || "";
   const getSearch = searchParams?.get("q") || "";
@@ -153,40 +156,7 @@ function AllProductsClientInner({
   );
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [sortKey, setSortKey] = useState<string>("name_asc");
-  const [isInitialized, setIsInitialized] = useState(hasInitialData);
-  const [hasLoadedFromSSR, setHasLoadedFromSSR] = useState(hasInitialData);
-
-  const categorySlugToId = useMemo(() => {
-    const flattenCategories = (
-      categories: YMMCategory[]
-    ): Array<[string, string]> => {
-      const result: Array<[string, string]> = [];
-      categories.forEach((cat) => {
-        result.push([cat.slug, cat.id]);
-        if (cat.children) {
-          result.push(...flattenCategories(cat.children));
-        }
-      });
-      return result;
-    };
-
-    return new Map(
-      searchData?.facets.categories
-        ? flattenCategories(searchData.facets.categories)
-        : []
-    );
-  }, [searchData?.facets.categories]);
-
-  const brandSlugToId = useMemo(
-    () =>
-      new Map(
-        searchData?.facets.brands.map((brand) => [
-          brand.value.toLowerCase().replace(/\s+/g, "-"),
-          brand.id,
-        ]) || []
-      ),
-    [searchData?.facets.brands]
-  );
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const SORT_OPTIONS = [
     { key: "price_min:asc", label: "Price: Low to High" },
@@ -194,30 +164,28 @@ function AllProductsClientInner({
   ];
 
   const updateURL = useCallback(
-    (categories: string[], brands: string[], sort: string, page: number) => {
+    (
+      categories: string[],
+      brands: string[],
+      sort: string,
+      page: number,
+      perPage: number
+    ) => {
       const params = new URLSearchParams();
 
       // Preserve fitment_pairs parameter
       if (selectedPairs) params.set("fitment_pairs", selectedPairs);
 
       if (getSearch) params.set("q", getSearch);
-      // Add category filters
-      if (categories.length > 0) {
-        categories.forEach((cat) => {
-          params.append("category", cat);
-        });
-      }
+      if (perPage !== 20) params.set("per_page", String(perPage));
 
-      // Add brand filters
-      if (brands.length > 0) {
-        brands.forEach((brand) => {
-          params.append("brand", brand);
-        });
-      }
+      // Keep URL keys aligned with PartsLogic request keys.
+      categories.forEach((slug) => params.append("category_slug", slug));
+      brands.forEach((slug) => params.append("brand_slug", slug));
 
       // Add sort parameter
       if (sort !== "name_asc") {
-        params.set("sort", sort);
+        params.set("sort_by", sort);
       }
 
       // Add page parameter
@@ -229,19 +197,21 @@ function AllProductsClientInner({
       const newURL = queryString ? `${pathname}?${queryString}` : pathname;
       router.replace(newURL, { scroll: false });
     },
-    [pathname, router, selectedPairs, searchParams]
+    [getSearch, pathname, router, selectedPairs]
   );
 
   const readFiltersFromURL = useCallback(() => {
-    const categoriesParam = searchParams.getAll("categories");
-    const productTypesParam = searchParams.getAll("productTypes");
-    const sortParam = searchParams.get("sort");
+    const categoriesParam = searchParams.getAll("category_slug");
+    const productTypesParam = searchParams.getAll("brand_slug");
+    const sortParam = searchParams.get("sort_by");
     const pageParam = searchParams.get("page");
+    const perPageParam = searchParams.get("per_page");
     return {
       categories: categoriesParam,
       brands: productTypesParam,
       sortKey: sortParam || "name_asc",
       page: pageParam ? parseInt(pageParam, 10) : 1,
+      perPage: perPageParam ? parseInt(perPageParam, 10) : null,
     };
   }, [searchParams]);
 
@@ -252,13 +222,22 @@ function AllProductsClientInner({
       setSelectedBrands(urlFilters.brands);
       setSortKey(urlFilters.sortKey);
       setCurrentPage(urlFilters.page);
+      if (urlFilters.perPage && [10, 20, 50, 100].includes(urlFilters.perPage)) {
+        setItemsPerPage(urlFilters.perPage as ItemsPerPage);
+      }
       setIsInitialized(true);
     }
   }, [isInitialized, readFiltersFromURL]);
 
   useEffect(() => {
     if (isInitialized) {
-      updateURL(selectedCategories, selectedBrands, sortKey, currentPage);
+      updateURL(
+        selectedCategories,
+        selectedBrands,
+        sortKey,
+        currentPage,
+        itemsPerPage
+      );
     }
   }, [
     isInitialized,
@@ -266,27 +245,14 @@ function AllProductsClientInner({
     selectedBrands,
     sortKey,
     currentPage,
+    itemsPerPage,
     updateURL,
   ]);
 
   useEffect(() => {
-    const urlPage = searchParams.get("page");
-    if (!urlPage) {
-      setCurrentPage(1);
-    }
-  }, [searchParams]);
-  useEffect(() => {
-    // Skip initial fetch if we have SSR data and no filters/search applied
-    if (
-      hasLoadedFromSSR &&
-      currentPage === 1 &&
-      !getSearch &&
-      !selectedPairs &&
-      selectedCategories.length === 0 &&
-      selectedBrands.length === 0 &&
-      sortKey === "name_asc"
-    ) {
-      setHasLoadedFromSSR(false); // Reset so subsequent changes will fetch
+    if (!isInitialized) return;
+    if (skipFirstFetchRef.current) {
+      skipFirstFetchRef.current = false;
       return;
     }
 
@@ -308,7 +274,7 @@ function AllProductsClientInner({
         }
 
         // Convert category slugs to IDs
-        if (selectedCategories.length > 0 && categorySlugToId.size > 0) {
+        if (selectedCategories.length > 0) {
           selectedCategories.forEach((slug) => {
             // const id = categorySlugToId.get(slug);
             params.append("category_slug", slug);
@@ -316,7 +282,7 @@ function AllProductsClientInner({
         }
 
         // Convert brand slugs to IDs
-        if (selectedBrands.length > 0 && brandSlugToId.size > 0) {
+        if (selectedBrands.length > 0) {
           selectedBrands.forEach((slug) => {
             // const id = brandSlugToId.get(slug);
             params.append("brand_slug", slug);
@@ -363,9 +329,7 @@ function AllProductsClientInner({
     selectedBrands,
     sortKey,
     getSearch,
-    hasLoadedFromSSR,
-    // categorySlugToId,
-    // brandSlugToId,
+    isInitialized,
   ]);
 
   const productsForGrid =

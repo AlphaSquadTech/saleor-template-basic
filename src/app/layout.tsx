@@ -91,6 +91,12 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${archivo.variable} ${daysOne.variable}`}>
       <head>
+        <script
+          // Hide SSR-only progressive-enhancement fallbacks as soon as JS is available.
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js');",
+          }}
+        />
         {configuration?.google?.search_console_verification_content && (
           <meta
             name="google-site-verification"
