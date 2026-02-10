@@ -1,0 +1,22 @@
+{
+  "name": "ez-oil-drain-valve-store",
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_BRAND_NAME": "ez-oil-drain-valve",
+    "NEXT_PUBLIC_LOGO_URL": "/logo.png",
+    "NEXT_PUBLIC_APP_ICON": "/icons/appIcon.png",
+    "NEXT_PUBLIC_TENANT_NAME": "ez-oil-drain-valve",
+    "NEXT_PUBLIC_ASSETS_BASE_URL": "https://zgnluljrtbddtwugakuf.supabase.co",
+    "NEXT_PUBLIC_TEMPLATE_NAME": "template1",
+    "NEXT_PUBLIC_API_URL": "https://api-ez-oil-drain-valve.wsm-dev.com/graphql/",
+    "NODE_ENV": "production",
+    "TENANT_NAME": "ez-oil-drain-valve",
+    "TEMPLATE_NAME": "template1"
+  }
+}
