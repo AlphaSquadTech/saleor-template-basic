@@ -34,12 +34,35 @@ Scope (per product decision): schema + basic headings is sufficient.
 - `/search` is `noindex,follow` and excluded from sitemap.
 - Dynamic `/{slug}` pages return 404 (not “soft 404”) when missing.
 
-SEO audit artifacts live in `docs/seo/`:
+### SSR vs CSR Policy (SEO)
 
-- `docs/seo/SEO-Audit-Critical.md`
-- `docs/seo/SEO-Audit-Report.md`
-- `docs/seo/SEO-Audit-Action-Items.md`
-- `docs/seo/SEO-Audit-Checklist-Results.csv`
+Rule of thumb:
+- Indexable, public-facing pages should render meaningful HTML on the initial response (SSR/ISR).
+- Client-side data fetching is allowed as progressive enhancement (filters, accordions, map interactions).
+- Explicitly `noindex` pages can be CSR.
+
+Current status:
+- SSR/ISR (indexable): `/`, `/products/all`, `/category`, `/category/[slug]`, `/brand/[id]`, `/product/[id]`, `/blog`, `/blog/[slug]`, CMS pages (`/[slug]`), static policy pages.
+- CSR allowed: `/search` (noindex), locator map UI (`/locator` body), forms (`/contact`, `/dealer-application` body).
+
+Notes:
+- PDP, category detail, and brand detail ship initial data server-side for SEO; client components are used for interaction only.
+
+### SEO Audit Runner (Local)
+
+There is a lightweight automated SEO audit runner:
+
+- Script: `scripts/seo-audit.mjs`
+- Writes: `docs/seo-audit-results.json`
+- Updates: `docs/SEO_AUDIT_REPORT.md` (replaces the "Automated Checks" section)
+
+Run (example):
+
+```
+NEXT_PUBLIC_SITE_URL="http://localhost:3010" SEO_AUDIT_BASE="http://localhost:3010" node scripts/seo-audit.mjs
+```
+
+Important: for canonical checks to be accurate, `NEXT_PUBLIC_SITE_URL` should match the dev server origin you are testing.
 
 ## What Was Removed (By Design)
 
@@ -71,6 +94,13 @@ Instead they call internal API routes:
 
 The main header navigation is server-rendered (no client-side nav boot required). Category + menu data is cached on the server with `unstable_cache` to avoid refetching on every request.
 
+## Guards / Regression Checks
+
+Main nav must remain server-rendered (no client bailout):
+
+- Script: `scripts/guard-server-nav.mjs`
+- Command: `yarn guard:server-nav`
+
 ## SMTP (Env-Configurable)
 
 `/api/form-submission` supports SMTP delivery via env variables (optional). If SMTP is not configured, the API returns a clear error.
@@ -92,12 +122,12 @@ The main header navigation is server-rendered (no client-side nav boot required)
 
 The following env values have been used successfully for local prod testing:
 
-- `NEXT_PUBLIC_TENANT_NAME='ez-oil-drain-valve'`
-- `NEXT_PUBLIC_BRAND_NAME='ez-oil-drain-valve'`
-- `NEXT_PUBLIC_API_URL='https://api.ezoildrainvalve.com/graphql/'`
-- `NEXT_PUBLIC_PARTSLOGIC_URL='https://pl-ez-oil-drain-valve.wsm-dev.com'`
+- `NEXT_PUBLIC_TENANT_NAME='baja-kits'`
+- `NEXT_PUBLIC_BRAND_NAME='AutoParts Store'`
+- `NEXT_PUBLIC_API_URL='https://api-baja-kits.wsm-dev.com/graphql/'`
+- `NEXT_PUBLIC_PARTSLOGIC_URL='https://pl-baja-kits.wsm-dev.com'`
 - `NEXT_PUBLIC_SEARCH_URL='https://wsm-migrator-api.alphasquadit.com'`
-- `NEXT_PUBLIC_SITE_URL='http://localhost:3105/'`
+- `NEXT_PUBLIC_SITE_URL='http://localhost:3010'`
 
 ## Known Tech Debt (Non-Blocking)
 
