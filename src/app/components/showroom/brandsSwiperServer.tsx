@@ -1,4 +1,4 @@
-import { CategoryAPIType } from "@/lib/api/shop";
+import type { CategoryAPIType } from "@/lib/api/shopTypes";
 import React from "react";
 import EmptyState from "../reuseableUI/emptyState";
 import Heading from "../reuseableUI/heading";

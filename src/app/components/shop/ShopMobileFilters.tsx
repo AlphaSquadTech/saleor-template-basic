@@ -4,7 +4,7 @@ import { useState } from "react";
 import ModalLayout from "@/app/components/reuseableUI/modalLayout";
 import { FiltersCollapsible } from "@/app/components/filtersCollapsible";
 import { FilterIcon } from "@/app/utils/svgs/filterIcon";
-import type { GraphQLCategory, GraphQLProductType } from "@/lib/api/shop";
+import type { GraphQLCategory, GraphQLProductType } from "@/lib/api/shopTypes";
 
 type HierarchicalCategory = {
   id: string;

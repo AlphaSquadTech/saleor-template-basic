@@ -1,4 +1,5 @@
-import { shopApi, type GraphQLCategory } from "@/lib/api/shop";
+import { shopApi } from "@/lib/api/shop";
+import type { GraphQLCategory } from "@/lib/api/shopTypes";
 import { fetchMenuBySlug } from "@/graphql/queries/getMenuBySlug";
 import { unstable_cache } from "next/cache";
 

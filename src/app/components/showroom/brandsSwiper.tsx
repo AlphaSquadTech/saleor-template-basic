@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import EmptyState from "../reuseableUI/emptyState";
 import Heading from "../reuseableUI/heading";
 import { BrandsSwiperClient } from "./brandsSwiperClient";
-import type { CategoryAPIType } from "@/lib/api/shop";
+import type { CategoryAPIType } from "@/lib/api/shopTypes";
 import { partsLogicClient } from "@/lib/client/partslogic";
 
 export const BrandsSwiper = () => {
