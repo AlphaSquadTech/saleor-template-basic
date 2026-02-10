@@ -6,6 +6,7 @@ const storeName = getStoreName();
 const title = `Search Results | ${storeName}`;
 const description = `Search for products at ${storeName}.`;
 const canonicalUrl = `${baseUrl.replace(/\/$/, "")}/search`;
+const ogImageUrl = `${baseUrl.replace(/\/$/, "")}/og-image.png`;
 
 export const metadata: Metadata = {
   title,
@@ -19,14 +20,24 @@ export const metadata: Metadata = {
     type: "website",
     url: canonicalUrl,
     siteName: storeName,
+    images: [
+      {
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: `${storeName} - Search`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
+    images: [ogImageUrl],
   },
   robots: {
-    index: true,
+    // E-commerce best practice: keep internal search results out of the index.
+    index: false,
     follow: true,
   },
 }

@@ -164,6 +164,7 @@ module.exports = {
   generateRobotsTxt: true,
   generateIndexSitemap: false,
   exclude: [
+    '/search',
     '/checkout',
     '/checkout/*',
     '/cart',

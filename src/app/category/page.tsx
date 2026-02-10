@@ -6,12 +6,40 @@ import {
 import type { Metadata } from "next";
 import { CategoryListingServer } from "./components/categoryListingServer";
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 const storeName = getStoreName();
+const title = `Categories | ${storeName}`;
+const description = "Browse product categories organized by type and application.";
+const canonicalUrl = `${baseUrl.replace(/\/$/, "")}/category`;
+const ogImageUrl = `${baseUrl.replace(/\/$/, "")}/og-image.png`;
 
 export const metadata: Metadata = {
-  title: `Categories - ${storeName}`,
-  description:
-    "Browse product categories organized by type and application.",
+  title,
+  description,
+  alternates: {
+    canonical: canonicalUrl,
+  },
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    url: canonicalUrl,
+    siteName: storeName,
+    images: [
+      {
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: `${storeName} - Categories`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: [ogImageUrl],
+  },
 };
 
 export default function CategoryPage() {

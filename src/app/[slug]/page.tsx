@@ -1,8 +1,9 @@
 import React from "react";
 import { Metadata } from "next";
-import ClientDynamicPage from "./ClientDynamicPage";
 import { fetchDynamicPageBySlug } from "@/graphql/queries/getDynamicPageBySlug";
 import { getStoreName } from "@/app/utils/branding";
+import { notFound } from "next/navigation";
+import DynamicPageRenderer from "../components/dynamicPage/DynamicPageRenderer";
 
 // Force dynamic rendering - don't try to statically generate these pages
 export const dynamic = 'force-dynamic';
@@ -32,6 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const title = pageData.seoTitle || pageData.title || `${slug} | ${storeName}`;
     const description = pageData.seoDescription || pageData.excerpt || `${pageData.title} - ${storeName}`;
     const canonicalUrl = `${baseUrl.replace(/\/$/, "")}/${slug}`;
+    const ogImageUrl = `${baseUrl.replace(/\/$/, "")}/og-image.png`;
 
     return {
       title,
@@ -45,11 +47,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         type: "website",
         url: canonicalUrl,
         siteName: storeName,
+        images: [
+          {
+            url: ogImageUrl,
+            width: 1200,
+            height: 630,
+            alt: `${storeName} - ${pageData.title || title}`,
+          },
+        ],
       },
       twitter: {
         card: "summary_large_image",
         title,
         description,
+        images: [ogImageUrl],
       },
     };
   } catch (error) {
@@ -64,5 +75,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function DynamicPage({ params }: PageProps) {
   const { slug } = await params;
 
-  return <ClientDynamicPage slug={slug} />;
+  const pageData = await fetchDynamicPageBySlug(slug);
+  if (!pageData) {
+    notFound();
+  }
+
+  return (
+    <main className="min-h-screen">
+      <DynamicPageRenderer pageData={pageData} />
+    </main>
+  );
 }

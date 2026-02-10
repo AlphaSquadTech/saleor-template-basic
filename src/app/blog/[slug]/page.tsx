@@ -32,6 +32,7 @@ export async function generateMetadata({
   const title = `${post.title} | ${storeName}`;
   const description = post.title;
   const canonicalUrl = `${baseUrl.replace(/\/$/, "")}/blog/${slug}`;
+  const ogImageUrl = `${baseUrl.replace(/\/$/, "")}/og-image.png`;
 
   return {
     title,
@@ -45,11 +46,20 @@ export async function generateMetadata({
       type: "article",
       url: canonicalUrl,
       siteName: storeName,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${storeName} - ${post.title}`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [ogImageUrl],
     },
   };
 }

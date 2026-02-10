@@ -12,6 +12,7 @@ import { PLSearchProduct, PLSearchProductsResponse } from "@/lib/api/shop";
 const baseUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 const storeName = getStoreName();
+const defaultOgImageUrl = `${baseUrl.replace(/\/$/, "")}/og-image.png`;
 
 export const revalidate = 300; // Cache for 5 minutes (ISR)
 
@@ -88,11 +89,20 @@ export async function generateMetadata({
       type: "website",
       url: canonicalUrl,
       siteName: storeName,
+      images: [
+        {
+          url: defaultOgImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${storeName} - ${categoryName}`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [defaultOgImageUrl],
     },
   };
 }

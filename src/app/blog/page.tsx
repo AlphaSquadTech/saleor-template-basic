@@ -17,6 +17,7 @@ const title = `Blog | ${storeName}`;
 const description =
   "Read the latest articles, guides, and tips.";
 const canonicalUrl = `${baseUrl.replace(/\/$/, "")}/blog`;
+const ogImageUrl = `${baseUrl.replace(/\/$/, "")}/og-image.png`;
 
 export const metadata: Metadata = {
   title,
@@ -30,11 +31,20 @@ export const metadata: Metadata = {
     type: "website",
     url: canonicalUrl,
     siteName: storeName,
+    images: [
+      {
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: `${storeName} - Blog`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
+    images: [ogImageUrl],
   },
 };
 

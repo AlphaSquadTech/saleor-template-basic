@@ -11,6 +11,7 @@ const storeName = getStoreName();
 const title = `Privacy Policy | ${storeName}`;
 const description = `Read our privacy policy to understand how ${storeName} collects, uses, and protects your personal information.`;
 const canonicalUrl = `${baseUrl.replace(/\/$/, "")}/privacy-policy`;
+const ogImageUrl = `${baseUrl.replace(/\/$/, "")}/og-image.png`;
 
 export const metadata: Metadata = {
   title,
@@ -24,11 +25,20 @@ export const metadata: Metadata = {
     type: "website",
     url: canonicalUrl,
     siteName: storeName,
+    images: [
+      {
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: `${storeName} - Privacy Policy`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
+    images: [ogImageUrl],
   },
 };
 

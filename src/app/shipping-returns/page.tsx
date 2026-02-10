@@ -11,6 +11,7 @@ const storeName = getStoreName();
 const title = `Shipping & Returns | ${storeName}`;
 const description = `Learn about ${storeName} shipping options, delivery times, return policy, and how to process returns for your products.`;
 const canonicalUrl = `${baseUrl.replace(/\/$/, "")}/shipping-returns`;
+const ogImageUrl = `${baseUrl.replace(/\/$/, "")}/og-image.png`;
 
 export const metadata: Metadata = {
   title,
@@ -24,11 +25,20 @@ export const metadata: Metadata = {
     type: "website",
     url: canonicalUrl,
     siteName: storeName,
+    images: [
+      {
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: `${storeName} - Shipping & Returns`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
+    images: [ogImageUrl],
   },
 }
 

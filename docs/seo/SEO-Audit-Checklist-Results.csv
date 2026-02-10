@@ -1,0 +1,237 @@
+id,priority,status,check,notes
+C-001,P0,PASS,Robots.txt file exists and is accessible at /robots.txt,Verified /robots.txt returns 200.
+C-002,P0,PARTIAL,No unintentional blocking of important pages,robots.txt blocks only non-existent/removed transactional paths; verify per-store additions.
+C-003,P1,PASS,Sitemap URL referenced in robots.txt,robots.txt references /sitemap.xml.
+C-005,P1,NT,Test/staging environments blocked,Requires environment-specific rules (staging/test).
+C-008,P0,PASS,XML sitemap exists at /sitemap.xml,Verified /sitemap.xml returns 200.
+C-009,P0,PASS,Sitemap is valid XML format,Sitemap is well-formed XML via next-sitemap.
+C-010,P0,PARTIAL,All indexable pages included in sitemap,Sitemap includes key static + dynamic entities; full coverage depends on CMS + routing.
+C-011,P0,PASS,No noindex pages in sitemap,Search is noindex and excluded from sitemap; transactional/auth routes excluded.
+C-012,P1,PASS,No redirecting URLs in sitemap,Template does not define application-level redirects; verify infra/CDN redirects separately.
+C-013,P0,PARTIAL,No 404/error pages in sitemap,Spot-checked key URLs; full validation requires crawling all sitemap URLs.
+C-014,P0,PASS,Sitemap uses canonical URLs only,Sitemap locs match canonical host derived from NEXT_PUBLIC_SITE_URL.
+C-019,P0,PASS,Dynamic product pages in sitemap,Product URLs included.
+C-020,P0,PASS,Dynamic category pages in sitemap,Category URLs included.
+C-021,P1,PASS,Blog/content pages in sitemap,Blog URLs included.
+C-022,P0,PASS,"Transactional pages excluded (cart, checkout)",Cart/checkout/order/account not present in sitemap.
+C-023,P1,NA,"Auth pages excluded (login, register)",Auth removed from Basic Template.
+C-024,P1,NA,Account pages excluded,Account area removed from Basic Template.
+C-025,P0,PASS,"Important pages have index,follow (default)","Indexable pages rely on default index,follow (no meta robots) unless explicitly set."
+C-026,P0,NA,Cart page has noindex,Cart removed.
+C-027,P0,NA,Checkout pages have noindex,Checkout removed.
+C-028,P1,NA,Account pages have noindex,Account removed.
+C-029,P0,NA,Order confirmation has noindex,Order confirmation removed.
+C-030,P1,PASS,Search results page strategy defined,"/search sets robots noindex,follow."
+C-031,P0,NT,Filtered/sorted URLs handled (noindex or canonical),Needs explicit policy for filtered/sorted URLs (noindex vs canonical).
+C-032,P1,NT,Pagination handled correctly,"Pagination is ""load more""; audit expects canonical/prev/next strategy if using paginated URLs."
+C-034,P1,NA,Payment callback pages have noindex,Payment callback pages removed.
+C-035,P0,PARTIAL,All indexable pages have canonical tags,Canonical tags verified on key routes; confirm all CMS-driven routes.
+C-036,P0,PASS,Canonical tags are self-referencing on unique pages,Key routes use self-referencing canonicals.
+C-037,P0,PASS,Canonical tags use absolute URLs,Canonicals are absolute URLs derived from NEXT_PUBLIC_SITE_URL.
+C-038,P0,PASS,metadataBase configured in Next.js,metadataBase set in src/app/layout.tsx.
+C-039,P0,NT,HTTP canonicals point to HTTPS,Depends on NEXT_PUBLIC_SITE_URL being https in production.
+C-040,P0,NT,www vs non-www consistency,Depends on NEXT_PUBLIC_SITE_URL and infrastructure (www vs non-www).
+C-041,P1,PASS,Trailing slash consistency,Canonicals strip trailing slash consistently.
+C-042,P1,PASS,Query parameters handled in canonicals,Search canonicals drop query; filtered/sorted policy still needs decision.
+C-043,P1,NT,Pagination canonicals correct,No rel prev/next; depends on pagination URL strategy.
+C-044,P1,NT,Filtered URLs canonical to main page,Needs explicit canonical/noindex handling for facet URLs.
+C-045,P1,NT,Duplicate content has cross-canonicals,Requires duplicate URL inventory.
+C-046,P0,NA,Permanent redirects use 301 or 308,Redirects intentionally removed; handled per storefront.
+C-047,P1,NA,No redirect chains (max 1 hop),Redirects intentionally removed; handled per storefront.
+C-048,P0,NA,No redirect loops,Redirects intentionally removed; handled per storefront.
+C-049,P1,NA,Old URLs redirect to new (slug changes),Redirects intentionally removed; handled per storefront.
+C-050,P0,NT,HTTP to HTTPS redirect,HTTP->HTTPS is infrastructure-level (CDN/hosting) concern.
+C-051,P1,NT,Non-www to www (or vice versa) redirect,www/non-www is infrastructure-level (CDN/hosting) concern.
+U-001,P1,PASS,URLs are human-readable,URLs are readable slugs (category/product/blog).
+U-002,P1,PASS,URLs use hyphens (not underscores),Slugs use hyphens.
+U-003,P1,PASS,URLs are lowercase,Routes are lowercase.
+U-005,P1,PARTIAL,URLs contain relevant keywords,Depends on content/slug conventions in Saleor/PartsLogic.
+U-006,P0,PASS,No session IDs in URLs,No session IDs observed.
+U-007,P1,PARTIAL,No unnecessary parameters,Search uses query params; indexability controlled via noindex.
+U-008,P1,PASS,Consistent URL structure across site,"Consistent /product/, /category/, /blog/, /brand/ patterns."
+U-009,P1,PASS,Product URLs use slugs (not IDs),Product pages use slug in /product/{slug}.
+U-010,P1,PASS,Category URLs use slugs,Category pages use slug in /category/{slug}.
+U-011,P1,PASS,Blog URLs use slugs,Blog uses /blog/{slug}.
+U-012,P1,PARTIAL,Important pages within 3 clicks of homepage,Navigation exists; click-depth depends on menu config in Saleor.
+U-013,P1,PASS,Logical URL hierarchy,Logical hierarchy for core entities.
+U-014,P1,PASS,Flat architecture for products (not too deep),Products are flat URLs.
+U-015,P1,NT,No orphan pages (all pages linked),Requires crawl of internal links.
+U-016,P1,PASS,Clear navigation structure,Header/footer navigation present.
+U-017,P1,PASS,Breadcrumb navigation present,"Breadcrumbs present on category/blog/static pages; PDP breadcrumb is via schema, visible breadcrumb varies."
+U-018,P1,PARTIAL,Category hierarchy is logical,Depends on Saleor category tree.
+U-019,P1,NT,Faceted navigation SEO handled,Facet URLs policy not fully defined.
+O-001,P0,PARTIAL,Every page has a unique title tag,Titles present on key routes; full uniqueness requires crawl.
+O-002,P1,NT,Titles are 50-60 characters,
+O-003,P1,NT,Primary keyword near beginning of title,
+O-005,P0,NT,No duplicate titles across pages,Requires crawl to detect duplicates.
+O-006,P1,NT,Titles are compelling (encourage clicks),
+O-007,P0,PASS,Product titles include product name,PDP title includes product name.
+O-008,P0,PASS,Category titles include category name,Category title includes category name.
+O-009,P0,PASS,Homepage title is optimized,Homepage title set to store name.
+O-010,P0,PASS,generateMetadata used for dynamic pages,generateMetadata used for PDP/category/blog dynamic pages.
+O-011,P1,NT,Every page has a meta description,
+O-012,P1,NT,Descriptions are 150-160 characters,
+O-013,P1,NT,Descriptions include primary keyword,
+O-014,P1,NT,Descriptions are unique per page,
+O-016,P1,NT,Product descriptions mention key features,
+O-017,P1,NT,Category descriptions are compelling,
+O-019,P0,FAIL,Every page has exactly one H1,"Not all key pages have exactly one visible H1 (e.g. /products/all, /product/{slug}, /contact, /locator)."
+O-020,P0,NT,H1 contains primary keyword,
+O-021,P0,NT,H1 is visible (not hidden),
+O-022,P1,NT,Heading hierarchy is logical (H1→H2→H3),
+O-024,P0,PARTIAL,Headings use semantic HTML (not styled divs/p),Most headings use semantic components; verify Heading defaults to h1 where required.
+O-025,P1,NT,Subheadings describe content sections,
+O-026,P0,FAIL,Product pages have product name as H1,PDP H1 missing in server-rendered HTML (observed h1_count=0).
+O-027,P0,PASS,Category pages have category name as H1,Category pages include an H1 (sampled /category/products).
+O-028,P1,NT,Primary keyword in first 100 words,
+O-030,P1,NT,Content is sufficient depth (not thin),
+O-031,P0,NT,Content is unique (not duplicated),
+O-032,P1,NT,Product descriptions are unique,
+O-033,P1,NT,Category pages have unique content,
+O-034,P0,PARTIAL,All images have alt attributes,Many images have alt; full coverage requires crawl.
+O-035,P1,NT,Alt text is descriptive,
+O-039,P1,NT,Product images have product-specific alt,
+O-040,P0,NT,No missing alt attributes,Requires crawl of all templates/components.
+O-041,P1,NT,Internal links use descriptive anchor text,
+O-042,P1,NT,Important pages have adequate internal links,
+O-043,P0,NT,No broken internal links,Requires link crawl.
+O-044,P1,NT,Related products are linked,
+O-045,P1,NT,Breadcrumbs provide internal links,
+O-047,P1,NT,Navigation provides clear linking,
+T-001,P0,FAIL,Critical content renders server-side (SSR/SSG),Several core pages render with Suspense fallbacks / client-only sections; verify no-JS content.
+T-002,P1,FAIL,Content visible without JavaScript,"Without JS, many pages show skeleton/placeholder content."
+T-003,P0,FAIL,No client-side only rendering for SEO content,SEO-critical content is often client-rendered (BAILOUT_TO_CLIENT_SIDE_RENDERING markers observed).
+T-004,P1,PARTIAL,Next.js Server Components used appropriately,Mix of server/client components; needs systematic review.
+T-005,P1,PARTIAL,Client components only for interactive elements,Interactivity is client; some content also client.
+T-006,P1,NT,Hydration errors resolved,Needs browser console to confirm hydration errors.
+T-007,P1,NT,No render-blocking JavaScript,Needs Lighthouse/trace to confirm render-blocking JS.
+T-008,P0,PASS,Valid pages return 200,Key pages return 200.
+T-009,P0,PASS,Not found pages return 404,Unknown /{slug} now returns 404 (fixed).
+T-010,P1,PASS,Custom 404 page exists,Custom 404 page exists (app/_not-found).
+T-011,P1,NT,Server errors return 5xx,Requires provoking backend errors.
+T-012,P0,PARTIAL,No soft 404s (empty pages with 200),Primary soft-404 source (/[slug]) fixed; still needs crawl for other soft-404 patterns.
+T-013,P1,NT,Out-of-stock products handled correctly,Out-of-stock handling depends on data and UI; requires manual verification.
+T-014,P0,PARTIAL,Images optimized (compression),next/image used widely; some components still use <img>.
+T-015,P1,NT,Modern image formats (WebP/AVIF),
+T-016,P1,NT,Images lazy-loaded below fold,
+T-018,P1,PASS,JavaScript minified,Next production build outputs minified JS.
+T-019,P1,PASS,CSS minified,CSS is bundled/minified in production build.
+T-020,P1,NT,Gzip/Brotli compression enabled,Compression depends on hosting/CDN.
+T-021,P1,NT,Browser caching configured,Caching headers depend on hosting/CDN; Next sets some cache headers.
+T-024,P1,PARTIAL,Third-party scripts async/defer,Some third-party scripts are conditional; needs full inventory.
+T-025,P1,PASS,Static pages pre-rendered (SSG),Many pages are prerendered (see next build output).
+T-026,P1,PARTIAL,Dynamic pages use ISR appropriately,Some pages use ISR revalidate; strategy may need tuning per route.
+T-027,P1,PASS,No unnecessary force-dynamic,No global force-dynamic except CMS dynamic slug route.
+P-001,P0,NT,LCP under 2.5 seconds,Requires Lighthouse/CrUX.
+P-002,P0,PARTIAL,Hero/banner images optimized,Hero uses next/image; overall LCP requires measurement.
+P-003,P1,NT,LCP element identified and optimized,
+P-004,P1,NT,Above-fold images preloaded,
+P-005,P1,NT,Server response time (TTFB) under 600ms,
+P-006,P1,PASS,Font display: swap used,Fonts use display: swap (next/font).
+P-008,P0,NT,INP under 200ms,Requires field/lab measurement.
+P-009,P1,NT,No long JavaScript tasks (>50ms),
+P-010,P1,NT,Event handlers optimized,
+P-012,P1,NT,No main thread blocking,
+P-013,P0,NT,CLS under 0.1,Requires measurement.
+P-014,P0,PARTIAL,Images have width/height attributes,next/image sets dimensions; verify remaining <img>.
+P-015,P1,NT,Ads/embeds have reserved space,
+P-016,P1,NT,Fonts don't cause layout shift,
+P-017,P1,NT,Dynamic content has reserved space,
+P-018,P1,NT,Skeleton loaders prevent CLS,
+P-019,P1,NT,No content injected above viewport,
+S-001,P1,PASS,Organization schema present,Organization JSON-LD present on homepage.
+S-002,P1,FAIL,Organization schema site-wide,Organization schema is not injected site-wide (homepage only).
+S-003,P1,PASS,WebSite schema with SearchAction,WebSite schema with SearchAction present on homepage.
+S-007,P0,PASS,Product schema on all product pages,Product JSON-LD present on PDP (sampled).
+S-008,P0,PASS,Product name in schema,Product name present.
+S-009,P1,PASS,Product description in schema,Product description present (but may be JSON-like; validate for Rich Results).
+S-010,P0,PASS,Product image in schema,Product image present.
+S-011,P0,PASS,Product price in schema,Price present.
+S-012,P0,PASS,Product currency in schema,Currency present.
+S-013,P0,PASS,Product availability in schema,Availability present.
+S-014,P1,NT,Product SKU in schema,
+S-015,P1,NT,Product brand in schema,
+S-016,P1,NT,Product MPN (part number) in schema,
+S-019,P0,PASS,Offer schema nested in Product,Offer nested in Product.
+S-021,P1,PARTIAL,BreadcrumbList schema on all pages,"BreadcrumbList present on many pages (PDP/category/blog), not guaranteed everywhere."
+S-022,P1,NT,Breadcrumb items have correct URLs,
+S-024,P1,NT,Breadcrumb hierarchy matches visible,
+S-027,P1,PASS,BlogPosting schema on blog posts,BlogPosting schema present on blog posts (sampled).
+S-031,P0,NT,All schema passes Google Rich Results Test,Requires Google Rich Results Test.
+S-032,P0,NT,No schema errors in Search Console,Requires Search Console.
+S-034,P1,PASS,JSON-LD format used (not microdata),JSON-LD used.
+M-001,P0,NT,Site passes Google Mobile-Friendly Test,
+M-002,P0,NT,Viewport meta tag configured,
+M-003,P0,NT,Responsive design (not separate mobile site),
+M-004,P0,NT,No horizontal scrolling on mobile,
+M-005,P1,NT,Text readable without zooming,
+M-006,P1,NT,Tap targets adequately sized (48x48px),
+M-007,P1,NT,Tap targets adequately spaced,
+M-008,P1,NT,No intrusive interstitials,
+M-009,P1,NT,Forms usable on mobile,
+M-010,P0,NT,Navigation works on mobile,
+M-011,P0,NT,Same content on mobile and desktop,
+M-012,P0,NT,Same structured data on mobile,
+M-013,P0,NT,Same meta tags on mobile,
+M-014,P1,NT,Images/videos accessible on mobile,
+M-015,P0,NT,Internal links work on mobile,
+E-004,P1,NT,Technical specifications accurate,
+E-005,P0,NT,Product compatibility information correct,
+E-008,P1,NT,Brand/manufacturer information present,
+E-011,P0,PASS,Contact information easily found,Contact info present in footer/header (sampled).
+E-012,P1,NT,Physical address displayed,
+E-013,P1,NT,Phone number present,
+E-014,P0,PASS,Privacy policy page exists,Privacy policy page exists.
+E-015,P1,NT,Terms and conditions page exists,
+E-016,P0,PASS,Return/refund policy clear,Shipping & Returns page exists.
+E-017,P1,NT,Shipping information present,
+E-018,P0,NT,Secure checkout indicators,
+EC-001,P1,NT,Unique product descriptions,
+EC-002,P1,NT,Product specifications listed,
+EC-003,P1,NT,Multiple product images,
+EC-004,P0,PARTIAL,Price clearly displayed,Price shown on product cards/schema; verify PDP UI renders without JS.
+EC-005,P0,PARTIAL,Availability/stock status shown,Availability in schema; UI depends on client render.
+EC-006,P0,NA,Add to cart prominent,Add to cart intentionally removed; replaced by Request a Quote.
+EC-009,P1,NT,Shipping information on product page,
+EC-010,P1,NT,Part numbers visible,
+EC-011,P0,NT,Vehicle fitment information (automotive),
+EC-012,P1,NT,Category descriptions present,
+EC-014,P1,NT,Filtering options available,
+EC-016,P1,NT,Pagination implemented correctly,
+EC-017,P1,NT,Subcategories linked,
+EC-018,P1,NT,Filter URLs SEO-friendly,
+EC-019,P0,PASS,Site search works correctly,Search endpoint works; /search is functional.
+EC-020,P1,NT,Search results relevant,
+EC-021,P1,NT,No results page helpful,
+EC-023,P1,NT,Out of stock products still accessible,
+EC-024,P0,NT,Out of stock clearly indicated,
+EC-027,P0,PASS,YMM (Year/Make/Model) selector works,PartsLogic fitment root-types endpoint responds 200 via proxy.
+EC-028,P0,NT,Fitment data accurate,Fitment accuracy requires domain validation.
+EC-029,P1,NT,Part numbers searchable,
+EC-032,P1,NT,Vehicle schema for fitment,
+L-003,P1,NT,NAP consistent across site,
+L-007,P1,NT,hreflang tags (if multi-language),
+L-008,P1,NT,Correct language/region targeting,
+L-009,P1,NT,Currency localization,
+SEC-001,P0,NT,Site uses HTTPS,Template supports HTTPS; depends on deployment.
+SEC-002,P0,NT,Valid SSL certificate,Depends on deployment certificate.
+SEC-003,P0,NT,No mixed content warnings,Requires browser audit.
+SEC-004,P1,NT,HSTS header configured,HSTS is hosting/CDN config.
+SOC-001,P1,PASS,og:title on all pages,og:title present on key pages.
+SOC-002,P1,PASS,og:description on all pages,og:description present on key pages.
+SOC-003,P0,PASS,og:image on all pages,og:image present on key pages (added defaults).
+SOC-004,P1,PASS,og:url on all pages,og:url present on key pages.
+SOC-009,P1,PASS,twitter:card on all pages,twitter:card present on key pages.
+SOC-010,P1,PASS,twitter:title on all pages,twitter:title present on key pages.
+SOC-011,P1,PASS,twitter:description on all pages,twitter:description present on key pages.
+SOC-012,P1,PASS,twitter:image on all pages,twitter:image present on key pages (added defaults).
+A-001,P0,NT,Google Analytics installed,Optional; requires GA config in Saleor/env.
+A-002,P1,NT,GA4 ecommerce tracking configured,
+A-003,P1,NT,Google Tag Manager configured,
+A-004,P1,NT,Analytics doesn't block rendering,
+A-005,P1,NT,Conversion tracking set up,
+A-006,P0,NT,Google Search Console verified,Requires GSC verification.
+A-007,P0,NT,Sitemap submitted to GSC,Requires GSC submission.
+A-008,P0,NT,No critical errors in GSC,Requires GSC access.
+A-009,P1,NT,Core Web Vitals monitored,
+A-010,P1,NT,Coverage report reviewed,

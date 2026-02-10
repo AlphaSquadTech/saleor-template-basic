@@ -65,12 +65,6 @@ type DynamicPageResponse = {
 };
 
 export async function fetchDynamicPageBySlug(slug: string): Promise<DynamicPageData | null> {
-  // Check if we're in a build context and skip API calls
-  if (typeof window === 'undefined' && process.env.NODE_ENV === 'production' && !process.env.VERCEL) {
-    console.log('[DEBUG] Build time detected, skipping API call');
-    return null;
-  }
-
   console.log(`[DEBUG] Fetching page with slug: "${slug}"`);
   
   // Get API URL at runtime

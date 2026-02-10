@@ -11,21 +11,75 @@ import {
   generateBreadcrumbSchema,
 } from "@/lib/schema";
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const storeName = getStoreName();
+const canonicalUrl = `${baseUrl.replace(/\/$/, "")}/site-map`;
+const ogImageUrl = `${baseUrl.replace(/\/$/, "")}/og-image.png`;
+
 export async function generateMetadata(): Promise<Metadata> {
   const post = await fetchBlogBySlug("site-map");
 
   if (!post || !post.title) {
+    const title = `Site Map | ${storeName}`;
+    const description = `Explore the comprehensive site map of ${storeName} to easily navigate through all sections and find what you're looking for quickly.`;
     return {
-      title: `Site Map - ${getStoreName()}`,
-      description: `Explore the comprehensive site map of ${getStoreName()} to easily navigate through all sections and find what you're looking for quickly.`,
+      title,
+      description,
+      alternates: { canonical: canonicalUrl },
+      openGraph: {
+        title,
+        description,
+        type: "website",
+        url: canonicalUrl,
+        siteName: storeName,
+        images: [
+          {
+            url: ogImageUrl,
+            width: 1200,
+            height: 630,
+            alt: `${storeName} - Site Map`,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: [ogImageUrl],
+      },
     };
   }
 
+  const title = `${post.title} | ${storeName}`;
+  const description =
+    post.title ||
+    `Explore the comprehensive site map of ${storeName} to easily navigate through all sections and find what you're looking for quickly.`;
+
   return {
-    title: `${post.title} - ${getStoreName()}`,
-    description:
-      post.title ||
-      `Explore the comprehensive site map of ${getStoreName()} to easily navigate through all sections and find what you're looking for quickly.`,
+    title,
+    description,
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      url: canonicalUrl,
+      siteName: storeName,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${storeName} - Site Map`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImageUrl],
+    },
   };
 }
 

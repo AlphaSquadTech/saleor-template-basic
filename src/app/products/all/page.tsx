@@ -15,6 +15,7 @@ const title = `All Products | ${storeName}`;
 const description =
   `Browse the complete collection of ${storeName} products.`;
 const canonicalUrl = `${baseUrl.replace(/\/$/, "")}/products/all`;
+const ogImageUrl = `${baseUrl.replace(/\/$/, "")}/og-image.png`;
 
 const PARTSLOGIC_URL = process.env.NEXT_PUBLIC_PARTSLOGIC_URL || "";
 const INITIAL_ITEMS_PER_PAGE = 20;
@@ -31,11 +32,20 @@ export const metadata: Metadata = {
     type: "website",
     url: canonicalUrl,
     siteName: storeName,
+    images: [
+      {
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: `${storeName} - All Products`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
+    images: [ogImageUrl],
   },
 };
 

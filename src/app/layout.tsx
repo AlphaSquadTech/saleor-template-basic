@@ -41,6 +41,7 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 const storeName = getStoreName();
 
 export const metadata: Metadata = {
+  metadataBase: new URL(baseUrl.replace(/\/$/, "")),
   title: storeName,
   description:
     "A Saleor storefront template with product browsing, YMM (Year/Make/Model), dealer locator, CMS pages, and inquiry forms.",
