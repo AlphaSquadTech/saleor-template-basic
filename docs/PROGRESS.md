@@ -36,6 +36,10 @@ To satisfy SEO SSR requirements without breaking the current client UX:
   - updates URL via `router.replace` for pagination/search so server SSR matches the URL
   - file: `src/app/category/[slug]/CategoryPageClient.tsx`
 
+### Bundle safety: prevent client imports of server shop module
+- Added `import "server-only";` to `src/lib/api/shop.ts` so any accidental client-side value import fails fast.
+- Added `src/lib/api/shopTypes.ts` for type-only imports in client components (prevents any temptation to import from `shop.ts`).
+
 ## Verified Locally
 - `yarn build` succeeds.
 - `curl` of listing pages includes real product links in the HTML via the SSR-only grid.
@@ -56,4 +60,3 @@ To satisfy SEO SSR requirements without breaking the current client UX:
 ## Open Questions
 - For “page 2” URLs on category/product listings:
   - Should SSR show only that page, or should it accumulate results (“load more” style)? Current behavior is standard pagination (page shows that page’s results).
-
