@@ -230,7 +230,9 @@ export default function EditorRenderer({
           />
         );
       case "header": {
-        const level = Math.min(Math.max(Number(data?.level) || 3, 1), 6)
+        // Never render `h1` from CMS content. Each page template should own the
+        // single visible H1 for SEO/accessibility.
+        const level = Math.min(Math.max(Number(data?.level) || 3, 2), 6)
         return React.createElement(
           `h${level}`,
           {

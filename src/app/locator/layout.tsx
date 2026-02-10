@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { getStoreName } from "@/app/utils/branding"
-import { Suspense } from "react"
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 const storeName = getStoreName();
@@ -43,5 +42,7 @@ export default function LocatorLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <Suspense>{children}</Suspense>
+  // Keep this segment server-renderable. Only client components that need it
+  // (e.g. `useSearchParams`) should be wrapped in a Suspense boundary.
+  return children
 }

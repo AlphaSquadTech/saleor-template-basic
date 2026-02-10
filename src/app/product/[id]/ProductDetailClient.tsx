@@ -701,9 +701,9 @@ export function ProductDetailClient() {
                 {product.collections.map((c) => c.name).join(", ")}
               </div>
             )} */}
-              <h1 className="text-xl lg:text-3xl font-primary uppercase -tracking-[0.09px] mb-2">
+              <h2 className="text-xl lg:text-3xl font-primary uppercase -tracking-[0.09px] mb-2">
                 {product.name}
-              </h1>
+              </h2>
 
               {/* Meta: SKU and stock */}
               {selectedVariant && (

@@ -56,7 +56,7 @@ export default function PrivacyPolicyPage() {
                 { text: "Privacy Policy", link: "/privacy-policy" },
               ]}
             />
-            <Heading content={derivedTitle} />
+            <Heading content={derivedTitle} as="h1" />
           </div>
 
           <section className="w-full">

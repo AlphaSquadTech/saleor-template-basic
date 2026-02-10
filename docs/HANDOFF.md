@@ -24,6 +24,23 @@ A Next.js App Router storefront meant for “request a quote” / lead-gen flows
   - Product inquiry: PDP “Request a Quote” modal
   - All submit to `POST /api/form-submission`
 
+## SEO Baseline (Implemented)
+
+Scope (per product decision): schema + basic headings is sufficient.
+
+- Exactly one visible `<h1>` on key routes (PDP, category, contact, locator, etc.).
+- Filtered/faceted category URLs are canonicalized to the base category URL.
+- Schema.org JSON-LD added to key templates (breadcrumbs, blog posting, etc.).
+- `/search` is `noindex,follow` and excluded from sitemap.
+- Dynamic `/{slug}` pages return 404 (not “soft 404”) when missing.
+
+SEO audit artifacts live in `docs/seo/`:
+
+- `docs/seo/SEO-Audit-Critical.md`
+- `docs/seo/SEO-Audit-Report.md`
+- `docs/seo/SEO-Audit-Action-Items.md`
+- `docs/seo/SEO-Audit-Checklist-Results.csv`
+
 ## What Was Removed (By Design)
 
 - Auth: removed completely (routes + API handlers + header UI).
@@ -52,6 +69,10 @@ Instead they call internal API routes:
 - Saleor global search: `GET /api/saleor/global-search?q=...`
 - Saleor products pagination: `POST /api/saleor/products`
 
+## SMTP (Env-Configurable)
+
+`/api/form-submission` supports SMTP delivery via env variables (optional). If SMTP is not configured, the API returns a clear error.
+
 ## Local Dev
 
 1. `yarn install`
@@ -65,20 +86,23 @@ Instead they call internal API routes:
   - Passes with env vars unset.
   - Passes with a real Saleor + PartsLogic env set.
 
+## Test Env Used (Example)
+
+The following env values have been used successfully for local prod testing:
+
+- `NEXT_PUBLIC_TENANT_NAME='ez-oil-drain-valve'`
+- `NEXT_PUBLIC_BRAND_NAME='ez-oil-drain-valve'`
+- `NEXT_PUBLIC_API_URL='https://api.ezoildrainvalve.com/graphql/'`
+- `NEXT_PUBLIC_PARTSLOGIC_URL='https://pl-ez-oil-drain-valve.wsm-dev.com'`
+- `NEXT_PUBLIC_SEARCH_URL='https://wsm-migrator-api.alphasquadit.com'`
+- `NEXT_PUBLIC_SITE_URL='http://localhost:3105/'`
+
 ## Known Tech Debt (Non-Blocking)
 
 - ESLint warnings exist (unused vars, hooks deps, `<img>` usage). These don’t break build.
 - `next-sitemap` currently runs postbuild; when Saleor/PartsLogic are configured it will fetch dynamic paths.
 
-## Next Steps (Decisions Needed)
+## Next Steps
 
-Decisions (confirmed):
-
-- Keep blog.
-- Newsletter is a pop-up (CMS-backed), not a page route.
-- Dealer locator should show the empty state when not configured.
-- Form delivery should support SMTP (env-configurable).
-
-Remaining:
-
-- Optional: later, add persistence (DB or Saleor app) if we want “store in Saleor”.
+- If we want a stricter SEO bar later: add richer on-page copy/content for categories/PDP (beyond “schema + headings”).
+- Optional: later, add persistence (DB or Saleor app) if we want “store in Saleor” for form submissions.

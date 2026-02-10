@@ -1,7 +1,7 @@
 # Next Steps Checklist
 
-- Implement SMTP delivery for `/api/form-submission` (env-driven).
-- Confirm the required Saleor CMS page slugs + required metadata for dynamic forms.
+- Confirm the required Saleor CMS page slugs + required metadata for dynamic forms (contact/dealer/newsletter/static pages).
+- Optional: tighten ESLint warnings (unused vars, hook deps) once the template behavior is stable.
 
 Optional cleanup:
 

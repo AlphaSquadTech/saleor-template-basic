@@ -114,7 +114,9 @@ export default async function CategoryPage({
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  void searchParams; // kept for route signature consistency
+  // SEO policy: filtered/sorted URLs canonicalize to the base category URL.
+  // We intentionally ignore query params for canonical generation.
+  void searchParams;
   const { slug } = await params;
   const decodedSlug = decodeURIComponent(slug);
   const categoryName = decodedSlug

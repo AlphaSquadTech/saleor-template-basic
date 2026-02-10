@@ -121,6 +121,9 @@ export default async function ProductsPage() {
 
   return (
     <>
+      <h1 className="container mx-auto px-4 md:px-6 pt-8 text-2xl md:text-3xl lg:text-4xl font-semibold text-[var(--color-secondary-800)]">
+        All Products
+      </h1>
       {/* Schema.org structured data */}
       <script
         type="application/ld+json"

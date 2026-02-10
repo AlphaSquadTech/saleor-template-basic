@@ -135,7 +135,7 @@ export default async function SiteMapPage() {
                 { text: post.title, link: "/site-map" },
               ]}
             />
-            <Heading content={post.title} />
+            <Heading content={post.title} as="h1" />
           </div>
 
           <div className="w-full flex flex-col items-start gap-6">

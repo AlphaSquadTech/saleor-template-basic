@@ -6,6 +6,7 @@ import {
   generateProductSchema,
   generateBreadcrumbSchema,
 } from "@/lib/schema";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -88,6 +89,9 @@ export default async function ProductPage({ params }: Props) {
   const { id } = await params;
   const slug = decodeURIComponent(id);
   const product = await getProductBySlug(slug);
+  if (!product) {
+    notFound();
+  }
 
   // Generate server-side JSON-LD schemas (initial render)
   // Note: Client component will update schema when variant selection changes
@@ -128,6 +132,9 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <>
+      <h1 className="container mx-auto px-4 md:px-6 pt-8 text-2xl md:text-3xl lg:text-4xl font-semibold text-[var(--color-secondary-800)]">
+        {product.name}
+      </h1>
       {/* Server-side JSON-LD structured data */}
       {productSchema && (
         <script
