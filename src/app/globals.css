@@ -19,6 +19,12 @@ body {
   background-color: white;
 }
 
+/* Progressive enhancement: server-rendered product grids used for SEO/no-JS are
+   hidden immediately when JS is available to avoid duplicate content on-screen. */
+.js .ssr-only-grid {
+  display: none;
+}
+
 [data-theme="Ezoildrain_valve"] {
   --color-primary: #f68d1f;
   --color-primary-50: #fef2f2;

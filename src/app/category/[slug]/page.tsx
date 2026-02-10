@@ -8,6 +8,7 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 import { getStoreName } from "@/app/utils/branding";
 import { PLSearchProduct, PLSearchProductsResponse } from "@/lib/api/shop";
+import { ProductCardServer } from "@/app/components/reuseableUI/productCardServer";
 
 const baseUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
@@ -19,10 +20,26 @@ export const revalidate = 300; // Cache for 5 minutes (ISR)
 const PARTSLOGIC_URL = process.env.NEXT_PUBLIC_PARTSLOGIC_URL || "";
 const INITIAL_ITEMS_PER_PAGE = 10;
 
+function firstParam(value: string | string[] | undefined): string | undefined {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+function parsePositiveInt(
+  value: string | undefined,
+  fallback: number,
+  opts?: { min?: number; max?: number }
+) {
+  const n = value ? Number.parseInt(value, 10) : Number.NaN;
+  const min = opts?.min ?? 1;
+  const max = opts?.max ?? 100;
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(max, Math.max(min, n));
+}
+
 // Server-side function to fetch initial products for SSR
 async function fetchInitialProducts(
   slug: string,
-  perPage: number = INITIAL_ITEMS_PER_PAGE
+  args: { page: number; perPage: number; q?: string }
 ): Promise<PLSearchProductsResponse | null> {
   if (!PARTSLOGIC_URL) {
     console.warn("PARTSLOGIC_URL not configured, skipping initial product fetch");
@@ -32,9 +49,11 @@ async function fetchInitialProducts(
   try {
     const params = new URLSearchParams({
       category_slug: slug,
-      page: "1",
-      per_page: String(perPage),
+      page: String(args.page),
+      per_page: String(args.perPage),
     });
+
+    if (args.q) params.set("q", args.q);
 
     const response = await fetch(
       `${PARTSLOGIC_URL}/api/search/products?${params.toString()}`,
@@ -114,17 +133,29 @@ export default async function CategoryPage({
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  // SEO policy: filtered/sorted URLs canonicalize to the base category URL.
-  // We intentionally ignore query params for canonical generation.
-  void searchParams;
+  const sp = await searchParams;
   const { slug } = await params;
   const decodedSlug = decodeURIComponent(slug);
   const categoryName = decodedSlug
     .replace(/-/g, " ")
     .replace(/\b\w/g, (l) => l.toUpperCase());
 
+  // SEO policy: filtered/sorted URLs canonicalize to the base category URL.
+  // We intentionally ignore query params for canonical generation.
+
+  const page = parsePositiveInt(firstParam(sp.page), 1, { min: 1 });
+  const perPage = parsePositiveInt(firstParam(sp.per_page), INITIAL_ITEMS_PER_PAGE, {
+    min: 1,
+    max: 100,
+  });
+  const q = firstParam(sp.q)?.trim() || undefined;
+
   // Fetch initial products server-side for SSR (critical for SEO)
-  const initialData = await fetchInitialProducts(slug, INITIAL_ITEMS_PER_PAGE);
+  const initialData = await fetchInitialProducts(slug, {
+    page,
+    perPage,
+    q,
+  });
 
   // Generate schema.org structured data
   const categoryPageSchema = generateProductCategoryPageSchema(
@@ -175,11 +206,49 @@ export default async function CategoryPage({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
         />
       )}
+
+      {/* SSR baseline product grid for SEO/no-JS. Hidden once JS is available. */}
+      {Array.isArray(initialData?.products) && (
+        <section className="container mx-auto mt-8 px-4 md:px-6 ssr-only-grid">
+          {initialData.products.length === 0 ? (
+            <div className="text-center py-12">
+              <h2 className="text-xl font-semibold text-[var(--color-secondary-800)]">
+                No products found
+              </h2>
+              <p className="mt-2 text-[var(--color-secondary-600)]">
+                Try adjusting your search criteria.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {initialData.products.map((p) => {
+                const href = `/product/${encodeURIComponent(p.slug || "")}`;
+                const imageUrl = p.primary_image || "";
+                const price = p.price_min || 0;
+                return (
+                  <ProductCardServer
+                    key={p.id}
+                    id={p.id}
+                    name={p.name}
+                    image={imageUrl}
+                    href={href}
+                    price={price}
+                    category={p.category_name || ""}
+                    onSale={(p.price_max || 0) > (p.price_min || 0)}
+                    skus={p.skus}
+                  />
+                );
+              })}
+            </div>
+          )}
+        </section>
+      )}
+
       <Suspense>
         <CategoryPageClient
           slug={slug}
-          initialProducts={initialData?.products || null}
-          initialPagination={initialData?.pagination || null}
+          initialProducts={initialData?.products ?? null}
+          initialPagination={initialData?.pagination ?? null}
           initialCategoryName={categoryName}
         />
       </Suspense>

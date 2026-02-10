@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Breadcrumb from "@/app/components/reuseableUI/breadcrumb";
 import EmptyState from "@/app/components/reuseableUI/emptyState";
 import { ProductCard } from "@/app/components/reuseableUI/productCard";
 import ItemsPerPageSelectClient from "@/app/components/shop/ItemsPerPageSelectClient";
-import SearchFilterClient from "@/app/components/shop/SearchFilterClient";
 import { partsLogicClient, type PLSearchProduct } from "@/lib/client/partslogic";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface PaginationInfo {
   total: number;
@@ -32,21 +32,35 @@ interface CategoryPageClientProps {
   initialCategoryName?: string;
 }
 
+function parsePositiveInt(value: string | null, fallback: number) {
+  const n = value ? Number.parseInt(value, 10) : Number.NaN;
+  if (!Number.isFinite(n) || n <= 0) return fallback;
+  return n;
+}
+
 export default function CategoryPageClient(props: CategoryPageClientProps) {
   const { slug, initialProducts, initialPagination, initialCategoryName } = props;
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const skipFirstFetchRef = useRef<boolean>(false);
 
   // Use initial data if provided (from SSR)
-  const hasInitialData = initialProducts && initialProducts.length > 0;
+  const hasInitialData =
+    Array.isArray(initialProducts) && initialPagination != null;
+  skipFirstFetchRef.current = skipFirstFetchRef.current || hasInitialData;
 
   const [itemsPerPage, setItemsPerPage] = useState<ItemsPerPage>(
     (initialPagination?.per_page as ItemsPerPage) || 10
   );
-  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState<number>(
+    initialPagination?.page || 1
+  );
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [products, setProducts] = useState<PLSearchProduct[]>(
     initialProducts || []
   );
   const [loading, setLoading] = useState(!hasInitialData);
-  const [loadingMore, setLoadingMore] = useState(false);
   const [categoryName, setCategoryName] = useState<string>(
     initialCategoryName || ""
   );
@@ -58,20 +72,56 @@ export default function CategoryPageClient(props: CategoryPageClientProps) {
       total_pages: 0,
     }
   );
-  const [isInitialized, setIsInitialized] = useState(hasInitialData);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  const urlState = useMemo(() => {
+    const page = parsePositiveInt(searchParams.get("page"), 1);
+    const perPageRaw = parsePositiveInt(searchParams.get("per_page"), itemsPerPage);
+    const perPage = ([10, 20, 50, 100] as number[]).includes(perPageRaw)
+      ? (perPageRaw as ItemsPerPage)
+      : itemsPerPage;
+    const q = (searchParams.get("q") || "").trim();
+    return { page, perPage, q };
+  }, [itemsPerPage, searchParams]);
+
+  const buildHref = useMemo(() => {
+    return (page: number) => {
+      const params = new URLSearchParams();
+      if (urlState.q) params.set("q", urlState.q);
+      if (urlState.perPage !== 10) params.set("per_page", String(urlState.perPage));
+      if (page > 1) params.set("page", String(page));
+      const qs = params.toString();
+      return qs ? `${pathname}?${qs}` : pathname;
+    };
+  }, [pathname, urlState.perPage, urlState.q]);
+
+  const updateURL = (next: { page: number; perPage: number; q: string }) => {
+    const params = new URLSearchParams();
+    if (next.q) params.set("q", next.q);
+    if (next.perPage !== 10) params.set("per_page", String(next.perPage));
+    if (next.page > 1) params.set("page", String(next.page));
+    const qs = params.toString();
+    const nextUrl = qs ? `${pathname}?${qs}` : pathname;
+    router.replace(nextUrl, { scroll: false });
+  };
 
   useEffect(() => {
-    const cacheKey = `${slug}_${itemsPerPage}_${searchQuery}`;
+    // Keep state driven by the URL (SSR baseline). This makes pagination/filtering
+    // work without JS and ensures the client does not "fight" the server HTML.
+    if (!isInitialized) setIsInitialized(true);
+    if (currentPage !== urlState.page) setCurrentPage(urlState.page);
+    if (itemsPerPage !== urlState.perPage) setItemsPerPage(urlState.perPage);
+    if (searchQuery !== urlState.q) setSearchQuery(urlState.q);
+  }, [currentPage, isInitialized, itemsPerPage, searchQuery, urlState.page, urlState.perPage, urlState.q]);
 
-    // Skip initial fetch if we have SSR data and haven't changed filters
-    if (
-      isInitialized &&
-      hasInitialData &&
-      itemsPerPage === (initialPagination?.per_page || 10) &&
-      !searchQuery
-    ) {
+  useEffect(() => {
+    if (!isInitialized) return;
+    if (skipFirstFetchRef.current) {
+      skipFirstFetchRef.current = false;
       return;
     }
+
+    const cacheKey = `${slug}_${currentPage}_${itemsPerPage}_${searchQuery}`;
 
     const fetchCategoryAndProducts = async () => {
       if (categoryCache.has(cacheKey)) {
@@ -80,12 +130,10 @@ export default function CategoryPageClient(props: CategoryPageClientProps) {
         setProducts(cached.products);
         setPagination(cached.pagination);
         setLoading(false);
-        setIsInitialized(true);
         return;
       }
 
       setLoading(true);
-
       try {
         const name = slug
           .replace(/-/g, " ")
@@ -93,7 +141,7 @@ export default function CategoryPageClient(props: CategoryPageClientProps) {
 
         const response = await partsLogicClient.searchProducts({
           category_slug: slug,
-          page: 1,
+          page: currentPage,
           per_page: itemsPerPage,
           q: searchQuery || undefined,
         });
@@ -111,36 +159,11 @@ export default function CategoryPageClient(props: CategoryPageClientProps) {
         console.error(e);
       } finally {
         setLoading(false);
-        setIsInitialized(true);
       }
     };
 
     fetchCategoryAndProducts();
-  }, [slug, itemsPerPage, searchQuery, isInitialized, hasInitialData, initialPagination?.per_page]);
-
-  const loadMore = async () => {
-    if (loadingMore || pagination.page >= pagination.total_pages) return;
-
-    setLoadingMore(true);
-    const nextPage = pagination.page + 1;
-
-    try {
-      const response = await partsLogicClient.searchProducts({
-        category_slug: slug,
-        page: nextPage,
-        per_page: itemsPerPage,
-        q: searchQuery || undefined,
-      });
-
-      const newProducts = response.products || [];
-      setProducts((prev) => [...prev, ...newProducts]);
-      setPagination(response.pagination);
-    } catch (error) {
-      console.error("Error loading more products:", error);
-    } finally {
-      setLoadingMore(false);
-    }
-  };
+  }, [currentPage, isInitialized, itemsPerPage, searchQuery, slug]);
 
   const breadcrumbItems = [
     { text: "HOME", link: "/" },
@@ -181,10 +204,37 @@ export default function CategoryPageClient(props: CategoryPageClientProps) {
             )}
           </div>
           <div className="flex w-full flex-col md:flex-row md:items-center justify-between lg:justify-end gap-4">
-            {/* <SearchFilterClient value={searchQuery} onChange={setSearchQuery} /> */}
+            <form
+              className="w-full md:w-auto"
+              method="get"
+              onSubmit={(e) => {
+                e.preventDefault();
+                updateURL({ page: 1, perPage: itemsPerPage, q: searchQuery });
+              }}
+            >
+              <input type="hidden" name="per_page" value={itemsPerPage} />
+              <div className="flex w-full md:w-96 gap-2">
+                <input
+                  name="q"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search in this category"
+                  className="w-full rounded-md border border-[var(--color-secondary-200)] px-3 py-2 text-sm font-secondary"
+                />
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-[var(--color-secondary-200)] text-gray-800 hover:opacity-80 disabled:opacity-60 transition-opacity text-sm font-secondary whitespace-nowrap"
+                >
+                  Search
+                </button>
+              </div>
+            </form>
             <ItemsPerPageSelectClient
               value={itemsPerPage}
-              onChange={setItemsPerPage}
+              onChange={(v) => {
+                setItemsPerPage(v);
+                updateURL({ page: 1, perPage: v, q: searchQuery });
+              }}
             />
           </div>
         </div>
@@ -234,19 +284,56 @@ export default function CategoryPageClient(props: CategoryPageClientProps) {
               )}
         </div>
 
-        {!loading &&
-          pagination.page < pagination.total_pages &&
-          products.length > 0 && (
-            <div className="mt-10 flex justify-center">
-              <button
-                onClick={loadMore}
-                disabled={loadingMore}
-                className="px-4 py-2 bg-[var(--color-secondary-200)] text-gray-800 hover:opacity-80 disabled:opacity-60 transition-opacity"
+        {!loading && pagination.total_pages > 1 && (
+          <nav className="mt-10 flex items-center justify-center gap-4 font-secondary text-sm">
+            {currentPage > 1 ? (
+              <a
+                href={buildHref(currentPage - 1)}
+                className="px-3 py-2 bg-[var(--color-secondary-200)] text-gray-800 hover:opacity-80 transition-opacity"
+                onClick={(e) => {
+                  // With JS enabled, keep it snappy; without JS the href works.
+                  e.preventDefault();
+                  updateURL({
+                    page: currentPage - 1,
+                    perPage: itemsPerPage,
+                    q: searchQuery,
+                  });
+                }}
               >
-                {loadingMore ? "Loading..." : "Load More"}
-              </button>
-            </div>
-          )}
+                Prev
+              </a>
+            ) : (
+              <span className="px-3 py-2 bg-[var(--color-secondary-100)] text-gray-500">
+                Prev
+              </span>
+            )}
+
+            <span className="text-[var(--color-secondary-700)]">
+              Page {currentPage} of {pagination.total_pages}
+            </span>
+
+            {currentPage < pagination.total_pages ? (
+              <a
+                href={buildHref(currentPage + 1)}
+                className="px-3 py-2 bg-[var(--color-secondary-200)] text-gray-800 hover:opacity-80 transition-opacity"
+                onClick={(e) => {
+                  e.preventDefault();
+                  updateURL({
+                    page: currentPage + 1,
+                    perPage: itemsPerPage,
+                    q: searchQuery,
+                  });
+                }}
+              >
+                Next
+              </a>
+            ) : (
+              <span className="px-3 py-2 bg-[var(--color-secondary-100)] text-gray-500">
+                Next
+              </span>
+            )}
+          </nav>
+        )}
       </section>
     </div>
   );
