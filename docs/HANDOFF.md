@@ -43,6 +43,15 @@ Template builds must not fail when env vars are missing.
 - PartsLogic-backed category/brand fetchers now no-op when `NEXT_PUBLIC_PARTSLOGIC_URL` is missing.
 - JSON-LD schema generators no longer assume `NEXT_PUBLIC_SITE_URL` exists.
 
+## Perf / Bundle Notes
+
+To keep client bundles smaller, client components no longer import the large `src/lib/api/shop.ts` module.
+Instead they call internal API routes:
+
+- PartsLogic proxy: `GET /api/partslogic-proxy?path=/api/...`
+- Saleor global search: `GET /api/saleor/global-search?q=...`
+- Saleor products pagination: `POST /api/saleor/products`
+
 ## Local Dev
 
 1. `yarn install`

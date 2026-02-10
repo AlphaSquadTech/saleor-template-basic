@@ -1,7 +1,7 @@
 "use client";
 import { SwiperArrowIconLeft } from "@/app/utils/svgs/swiperArrowIconLeft";
 import { SwiperArrowIconRight } from "@/app/utils/svgs/swiperArrowIconRight";
-import { CategoryAPIType } from "@/lib/api/shop";
+import type { CategoryAPIType } from "@/lib/api/shop";
 import React, { Suspense } from "react";
 import {
   A11y,

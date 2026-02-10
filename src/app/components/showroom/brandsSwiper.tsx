@@ -1,9 +1,10 @@
 "use client";
-import { CategoryAPIType, shopApi } from "@/lib/api/shop";
 import React, { useEffect } from "react";
 import EmptyState from "../reuseableUI/emptyState";
 import Heading from "../reuseableUI/heading";
 import { BrandsSwiperClient } from "./brandsSwiperClient";
+import type { CategoryAPIType } from "@/lib/api/shop";
+import { partsLogicClient } from "@/lib/client/partslogic";
 
 export const BrandsSwiper = () => {
   const [brandsData, setBrands] = React.useState<CategoryAPIType[]>([]);
@@ -11,10 +12,8 @@ export const BrandsSwiper = () => {
   useEffect(() => {
     const fetchBrandsData = async () => {
       try {
-        const resp = await shopApi.brandsProductPL();
-        if (resp && Array.isArray(resp.brands)) {
-          setBrands(resp.brands);
-        }
+        const resp = await partsLogicClient.getBrands();
+        if (resp.brands && Array.isArray(resp.brands)) setBrands(resp.brands);
       } catch (error) {
         console.error("Error fetching brands:", error);
         setBrands([]);

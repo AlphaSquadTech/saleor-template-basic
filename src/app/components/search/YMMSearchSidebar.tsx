@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { shopApi } from "@/lib/api/shop";
 import { useYmmStore } from "@/store/useYmmStore";
 import Select from "@/app/components/reuseableUI/select";
+import { partsLogicClient } from "@/lib/client/partslogic";
 
 interface YMMSearchSidebarProps {
   initialYear?: number | string;
@@ -50,7 +50,7 @@ export default function YMMSearchSidebar({
         if (!selectedYearData) {
           return;
         }
-        const response = await shopApi.getMakes(selectedYearData.id);
+        const response = await partsLogicClient.getMakes(selectedYearData.id);
         if (response) {
           setMakes(response.data.map((m) => ({ id: m.id, value: m.value })));
         }
@@ -85,7 +85,7 @@ export default function YMMSearchSidebar({
 
         if (!selectedYearData) return;
 
-        const response = await shopApi.getModels(
+        const response = await partsLogicClient.getModels(
           selectedYearData.id,
           selectedMakeData.id
         );

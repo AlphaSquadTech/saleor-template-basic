@@ -32,7 +32,8 @@ import {
 import EditorRenderer from "@/app/components/richText/EditorRenderer";
 import ItemInquiryModal from "./components/itemInquiryModal";
 import { ProductInquiryIcon } from "@/app/utils/svgs/productInquiryIcon";
-import { FitmentData, shopApi } from "@/lib/api/shop";
+import { partsLogicClient } from "@/lib/client/partslogic";
+import type { FitmentData } from "@/lib/api/shop";
 /* No cart/checkout in this template. Product pages support "Request a Quote". */
 
 type EditorBlock =
@@ -351,8 +352,8 @@ export function ProductDetailClient() {
           setFitmentData(null);
           return;
         }
-        const response = await shopApi.getFitmentValuesId(numericId);
-        setFitmentData(response.data);
+        const response = await partsLogicClient.getFitmentGroups(String(numericId));
+        setFitmentData((response as { data?: FitmentData[] }).data ?? []);
       } catch (error) {
         console.error("Error fetching fitment data:", error);
         setFitmentError("Failed to load fitment data");

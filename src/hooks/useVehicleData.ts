@@ -1,6 +1,6 @@
-import { shopApi } from "@/lib/api/shop";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
+import { partsLogicClient } from "@/lib/client/partslogic";
 
 export interface VehicleOption {
   id: string | number;
@@ -88,7 +88,7 @@ export const useVehicleData = () => {
     const fetchRootTypes = async () => {
       setRootTypesLoading(true);
       try {
-        const response = await shopApi.getRootTypes();
+        const response = await partsLogicClient.getRootTypes();
         if (response?.data && response.data.length > 0) {
           setRootTypes(response.data);
 
@@ -132,11 +132,7 @@ export const useVehicleData = () => {
     selectedPairs?: string
   ): Promise<FitmentAPIType[]> => {
     try {
-      const query: number | string = selectedPairs
-        ? `${typeId}?selected_pairs=${selectedPairs}`
-        : typeId;
-
-      const response = await shopApi.getFitmentValuesApi(query);
+      const response = await partsLogicClient.getFitmentValues(typeId, selectedPairs);
 
       if (response?.data) {
         return Array.isArray(response.data) ? response.data : [response.data];
@@ -250,39 +246,6 @@ export const useVehicleData = () => {
         const [typeId, valueId] = pair.split(":").map(Number);
         return { typeId, valueId };
       });
-      
-      // Log the actual selected values from the API
-      for (const pair of parsed) {
-        try {
-          const typeResponse = await shopApi.getRootTypes();
-          let typeName = `Type ${pair.typeId}`;
-          
-          if (typeResponse?.data) {
-            const findTypeName = (nodes: FitmentAPIMakesType[]): string | null => {
-              for (const node of nodes) {
-                if (node.id === pair.typeId) return node.name;
-                if (node.children) {
-                  const found = findTypeName(node.children);
-                  if (found) return found;
-                }
-              }
-              return null;
-            };
-            typeName = findTypeName(typeResponse.data) || typeName;
-          }
-          
-          const response = await shopApi.getFitmentValuesApi(pair.typeId);
-          if (response?.data) {
-            const values = Array.isArray(response.data) ? response.data : [response.data];
-            const selectedValue = values.find((v: FitmentAPIType) => v.id === pair.valueId);
-            if (selectedValue) {
-              console.log(`${typeName}: ${selectedValue.value || selectedValue.name}`);
-            }
-          }
-        } catch (error) {
-          console.error(`Failed to fetch value for type ${pair.typeId}:`, error);
-        }
-      }
 
       const levels: DropdownLevel[] = [];
 

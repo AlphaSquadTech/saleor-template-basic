@@ -13,7 +13,7 @@ import {
 import { Swiper, SwiperSlide } from "swiper/react";
 import { BrandCard } from "../reuseableUI/brandCard";
 import Heading from "../reuseableUI/heading";
-import { CategoryAPIType } from "@/lib/api/shop";
+import type { CategoryAPIType } from "@/lib/api/shop";
 
 interface BrandSwiperProps {
   brands: CategoryAPIType[];

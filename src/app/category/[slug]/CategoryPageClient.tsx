@@ -6,7 +6,7 @@ import EmptyState from "@/app/components/reuseableUI/emptyState";
 import { ProductCard } from "@/app/components/reuseableUI/productCard";
 import ItemsPerPageSelectClient from "@/app/components/shop/ItemsPerPageSelectClient";
 import SearchFilterClient from "@/app/components/shop/SearchFilterClient";
-import { shopApi, type PLSearchProduct } from "@/lib/api/shop";
+import { partsLogicClient, type PLSearchProduct } from "@/lib/client/partslogic";
 
 interface PaginationInfo {
   total: number;
@@ -87,24 +87,15 @@ export default function CategoryPageClient(props: CategoryPageClientProps) {
       setLoading(true);
 
       try {
-        const channel =
-          process.env.NEXT_PUBLIC_SALEOR_CHANNEL || "default-channel";
+        const name = slug
+          .replace(/-/g, " ")
+          .replace(/\b\w/g, (l) => l.toUpperCase());
 
-        const category = await shopApi.getCategoryBySlug({
-          slug,
-          channel,
-        });
-
-        const name =
-          category?.name ||
-          slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
-
-        const response = await shopApi.getProductsBySlug({
-          slug,
+        const response = await partsLogicClient.searchProducts({
+          category_slug: slug,
           page: 1,
           per_page: itemsPerPage,
-          search: searchQuery || undefined,
-          filterType: "category_slug",
+          q: searchQuery || undefined,
         });
 
         categoryCache.set(cacheKey, {
@@ -134,12 +125,11 @@ export default function CategoryPageClient(props: CategoryPageClientProps) {
     const nextPage = pagination.page + 1;
 
     try {
-      const response = await shopApi.getProductsBySlug({
-        slug: slug,
+      const response = await partsLogicClient.searchProducts({
+        category_slug: slug,
         page: nextPage,
         per_page: itemsPerPage,
-        search: searchQuery || undefined,
-        filterType: "category_slug",
+        q: searchQuery || undefined,
       });
 
       const newProducts = response.products || [];

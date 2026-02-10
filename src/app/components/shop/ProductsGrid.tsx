@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { shopApi } from "@/lib/api/shop";
 import { ProductCard } from "@/app/components/reuseableUI/productCard";
 import EmptyState from "@/app/components/reuseableUI/emptyState";
 import { gtmViewItemList, gtmSearchWithResults, Product } from "@/app/utils/googleTagManager";
 import { useAppConfiguration } from "../providers/ServerAppConfigurationProvider";
+import { saleorFetchProducts } from "@/lib/client/saleor";
 
 export interface ProductsGridProps {
   initialEdges: Array<{ node: { id: string; name: string; slug: string; media?: Array<{ id: string; url: string; alt: string | null }>; category: { id: string; name: string } | null; pricing: { onSale: boolean | null; priceRange: { start: { gross: { amount: number; currency: string } } | null; stop: { gross: { amount: number; currency: string } } | null } | null } | null } }>;
@@ -93,67 +93,69 @@ export default function ProductsGrid({
       
       if (categoryIds && categoryIds.length > 0) {
         // Category-specific products
-        response = await shopApi.getProductsByCategory({
-          categoryIds,
-          channel,
-          first,
-          after: after || undefined,
-          search: search || undefined
+        response = await saleorFetchProducts({
+          kind: "byCategory",
+          variables: {
+            categoryIds,
+            channel,
+            first,
+            after: after || undefined,
+            search: search || undefined,
+          },
         });
       } else if (brandIds && brandIds.length > 0) {
         // Brand-specific products (product types)
-        response = await shopApi.getProductsByProductType({
-          productTypeIds: brandIds,
-          channel,
-          first,
-          after: after || undefined,
-          search: search || undefined
+        response = await saleorFetchProducts({
+          kind: "byProductType",
+          variables: {
+            productTypeIds: brandIds,
+            channel,
+            first,
+            after: after || undefined,
+            search: search || undefined,
+          },
         });
       } else {
         // General product search using existing function
-        response = await shopApi.getProductsByCategoriesAndProductTypes({
-          categoryIds: categoryIds || undefined,
-          productTypeIds: brandIds || undefined,
-          channel,
-          first,
-          sortField: "DATE",
-          sortDirection: "ASC"
+        response = await saleorFetchProducts({
+          kind: "byCategoriesAndProductTypes",
+          variables: {
+            categoryIds: categoryIds || undefined,
+            productTypeIds: brandIds || undefined,
+            channel,
+            first,
+            after: after || undefined,
+          },
         });
       }
       
       // Ignore stale responses if inputs changed during the request
       if (requestKey !== currentKeyRef.current) return;
       
-      // Products are already in the correct GraphQL format, but need to add onSale field
-      type GraphQLEdgeWithOnSale = {
-        cursor: string;
+      const newEdges = response.products.edges.map((edge) => ({
         node: {
-          id: string;
-          name: string;
-          slug: string;
-          description: string;
-          category: { id: string; name: string } | null;
-          productType: { id: string; name: string } | null;
-          media: Array<{ id: string; url: string; alt: string | null }>;
-          pricing: {
-            onSale: boolean | null;
-            priceRange: {
-              start: { gross: { amount: number; currency: string } } | null;
-              stop: { gross: { amount: number; currency: string } } | null;
-            } | null;
-          } | null;
-        };
-      };
-      
-      const newEdges: GraphQLEdgeWithOnSale[] = response.products.edges.map((edge) => ({
-        ...edge,
-        node: {
-          ...edge.node,
-          pricing: edge.node.pricing ? {
-            ...edge.node.pricing,
-            onSale: null // GraphQL doesn't provide onSale info
-          } : null
-        }
+          id: edge.node.id,
+          name: edge.node.name,
+          slug: edge.node.slug,
+          media: edge.node.media ?? [],
+          category: edge.node.category ?? null,
+          pricing: edge.node.pricing
+            ? (() => {
+                const pr = edge.node.pricing?.priceRange ?? null;
+                const startGross = pr?.start?.gross ?? null;
+                const stopGross = pr?.stop?.gross ?? null;
+                return {
+                  onSale: null, // GraphQL doesn't provide onSale info
+                  priceRange: pr
+                    ? {
+                        start: startGross ? { gross: startGross } : null,
+                        stop: stopGross ? { gross: stopGross } : null,
+                      }
+                    : null,
+                };
+              })()
+            : null,
+        },
       }));
       
       // Dedupe by product ID

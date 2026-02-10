@@ -1,9 +1,9 @@
 "use client";
-import { shopApi } from "@/lib/api/shop";
 import React, { useEffect } from "react";
 import EmptyState from "../reuseableUI/emptyState";
 import Heading from "../reuseableUI/heading";
 import CategorySwiper from "./categorySwiper";
+import { partsLogicClient } from "@/lib/client/partslogic";
 export type CategoryAPIType = {
   id: string;
   image: string;
@@ -16,8 +16,8 @@ export const CategoryGrid = () => {
   useEffect(() => {
     const fetchCategoriesData = async () => {
       try {
-        const resp = await shopApi.categoryProductPL();
-        setCategories(resp.categories);
+        const resp = await partsLogicClient.getCategories();
+        setCategories(resp.categories ?? []);
       } catch (error) {
         console.error("Error fetching categories:", error);
         setCategories([]);

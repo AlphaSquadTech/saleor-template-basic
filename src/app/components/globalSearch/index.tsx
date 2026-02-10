@@ -8,10 +8,10 @@ import PrimaryButton from "../reuseableUI/primaryButton";
 import { CrossIcon } from "@/app/utils/svgs/crossIcon";
 import { useYmmStore } from "@/store/useYmmStore";
 import {
-  shopApi,
+  partsLogicClient,
   type PLSearchProductsResponse,
-  type GlobalSearchResponse,
-} from "@/lib/api/shop";
+} from "@/lib/client/partslogic";
+import { saleorGlobalSearch, type GlobalSearchResponse } from "@/lib/client/saleor";
 import { getFullImageUrl } from "@/app/utils/functions";
 
 interface GlobalSearchProps {
@@ -73,7 +73,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ setShowSearch }) => {
         if (isYmmActive) {
           // Use PartsLogic search products API
           const response: PLSearchProductsResponse =
-            await shopApi.searchProductsPL({
+            await partsLogicClient.searchProducts({
               q: query.trim(),
               page: 1,
               per_page: 10,
@@ -121,8 +121,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ setShowSearch }) => {
         } else {
           // Use GraphQL search (Saleor API) as fallback
           const response: GlobalSearchResponse =
-            await shopApi.globalSearchStorefront({
-              query: query.trim(),
+            await saleorGlobalSearch({
+              q: query.trim(),
               channel: "default-channel",
               includeProducts: true,
               includeCategories: true,
@@ -143,8 +143,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ setShowSearch }) => {
         // If PartsLogic API fails, try GraphQL as fallback
         try {
           const response: GlobalSearchResponse =
-            await shopApi.globalSearchStorefront({
-              query: query.trim(),
+            await saleorGlobalSearch({
+              q: query.trim(),
               channel: "default-channel",
               includeProducts: true,
               includeCategories: true,
@@ -189,14 +189,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ setShowSearch }) => {
           // Categories will be populated from REST API search results
           // No need to load separately as they come with fuzzy search response
         } else {
-          const response = await shopApi.getGraphQLCategories({
-            channel: "default-channel",
-          });
-          const categoryOptions = response.categories.edges.map((edge) => ({
-            value: edge.node.slug,
-            label: edge.node.name,
-          }));
-          setCategories(categoryOptions);
+          // No dedicated category prefetch; use categories from global search results.
+          setCategories([]);
         }
       } catch (error) {
         // Failed to load categories
@@ -205,6 +199,17 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ setShowSearch }) => {
 
     loadCategories();
   }, [isYmmActive]);
+
+  // Populate category options from current search results (both PL facets and Saleor nodes).
+  useEffect(() => {
+    if (!searchResults?.categories?.length) return;
+    setCategories(
+      searchResults.categories.map((c) => ({
+        value: c.slug,
+        label: c.name,
+      }))
+    );
+  }, [searchResults]);
 
   const handleSearch = () => {
     if (!searchQuery.trim()) return;

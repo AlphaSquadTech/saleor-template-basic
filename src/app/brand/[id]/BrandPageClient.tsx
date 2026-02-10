@@ -5,7 +5,8 @@ import EmptyState from "@/app/components/reuseableUI/emptyState";
 import { ProductCard } from "@/app/components/reuseableUI/productCard";
 import ItemsPerPageSelectClient from "@/app/components/shop/ItemsPerPageSelectClient";
 import SearchFilterClient from "@/app/components/shop/SearchFilterClient";
-import { PLSearchProduct, shopApi } from "@/lib/api/shop";
+import type { PLSearchProduct } from "@/lib/client/partslogic";
+import { partsLogicClient } from "@/lib/client/partslogic";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -31,12 +32,11 @@ export default function BrandPageClient() {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await shopApi.getProductsBySlug({
-          slug: route,
+        const response = await partsLogicClient.searchProducts({
+          brand_slug: route,
           page: 1,
           per_page: itemsPerPage,
-          search: searchQuery || undefined,
-          filterType: "brand_slug",
+          q: searchQuery || undefined,
         });
         setProducts(response.products || []);
         setPagination(response.pagination);
@@ -63,12 +63,11 @@ export default function BrandPageClient() {
     const nextPage = pagination.page + 1;
 
     try {
-      const response = await shopApi.getProductsBySlug({
-        slug: route,
+      const response = await partsLogicClient.searchProducts({
+        brand_slug: route,
         page: nextPage,
         per_page: itemsPerPage,
-        search: searchQuery || undefined,
-        filterType: "brand_slug",
+        q: searchQuery || undefined,
       });
 
       const newProducts = response.products || [];
@@ -161,7 +160,7 @@ export default function BrandPageClient() {
                       item.collection_names?.includes("Best Sellers") || false
                     }
                     onSale={(item.price_max || 0) > (item.price_min || 0)}
-                    skus={item.skus}
+                    skus={item.skus || []}
                   />
                 ))
             : !loading && (

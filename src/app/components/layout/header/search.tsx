@@ -1,19 +1,22 @@
 "use client";
 
 import { SearchIcon } from "@/app/utils/svgs/searchIcon";
-import {
-  shopApi,
-  type GlobalSearchProduct,
-  type GlobalSearchCategory,
-  type GlobalSearchProductType,
-  type PLSearchProductsResponse,
-} from "@/lib/api/shop";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import InputField from "../../reuseableUI/defaultInputField";
 import { ArrowUpIcon } from "@/app/utils/svgs/arrowUpIcon";
 import { cn, getFullImageUrl } from "@/app/utils/functions";
 import { useYmmStore } from "@/store/useYmmStore";
+import {
+  partsLogicClient,
+  type PLSearchProductsResponse as PLResp,
+} from "@/lib/client/partslogic";
+import {
+  saleorGlobalSearch,
+  type GlobalSearchProduct,
+  type GlobalSearchCategory,
+  type GlobalSearchProductType,
+} from "@/lib/client/saleor";
 
 const Search = ({ className }: { className?: string }) => {
   const router = useRouter();
@@ -66,14 +69,12 @@ const Search = ({ className }: { className?: string }) => {
         // If YMM status is OK/Active → Use PartsLogic search products API
         // If YMM status is NOT OK → Use GraphQL search
         if (isYmmActive) {
-          const resp: PLSearchProductsResponse = await shopApi.searchProductsPL(
-            {
+          const resp: PLResp = await partsLogicClient.searchProducts({
               q: term.trim(),
               page: 1,
               per_page: 10,
               fitment_pairs: fitmentPairs ? fitmentPairs : "",
-            }
-          );
+          });
 
           if (!controller.signal.aborted) {
             // Transform PartsLogic response to match component's expected format
@@ -128,8 +129,8 @@ const Search = ({ className }: { className?: string }) => {
             setProductTypes(restProductTypes);
           }
         } else {
-          const resp = await shopApi.globalSearchStorefront({
-            query: term.trim(),
+          const resp = await saleorGlobalSearch({
+            q: term.trim(),
             channel: "default-channel",
             includeProducts: true,
             includeCategories: true,
@@ -347,12 +348,12 @@ const Search = ({ className }: { className?: string }) => {
                           />
                         </div>
                       )}
-                      <div className="flex items-center justify-between flex-1">
-                        <span>{c.name}</span>
-                        <span className="text-xs text-gray-500">
-                          ({c.products.totalCount})
-                        </span>
-                      </div>
+	                      <div className="flex items-center justify-between flex-1">
+	                        <span>{c.name}</span>
+	                        <span className="text-xs text-gray-500">
+	                          ({c.products?.totalCount ?? 0})
+	                        </span>
+	                      </div>
                     </div>
                     <span className=" rotate-90 ml-2">{ArrowUpIcon}</span>
                   </button>
