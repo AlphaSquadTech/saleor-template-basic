@@ -432,7 +432,8 @@ function AllProductsClientInner({
       <div className="space-y-5">
         <Breadcrumb items={productBreadcrumbItems} />
 
-        <Heading as="h1" className="mt-5" content={"Products"} />
+        {/* H1 is rendered server-side in `src/app/products/all/page.tsx` for SEO. */}
+        <Heading as="h2" className="mt-5" content={"Products"} />
         <div className="flex flex-col md:flex-row items-center gap-3 lg:gap-1 w-full justify-end">
           <SortDropdown
             sortOptions={SORT_OPTIONS}

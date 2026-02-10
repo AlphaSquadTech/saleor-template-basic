@@ -10,6 +10,7 @@ import {
   generateBlogPostingSchema,
   generateBreadcrumbSchema,
 } from "@/lib/schema";
+import { notFound } from "next/navigation";
 
 const baseUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
@@ -73,18 +74,7 @@ export default async function BlogPostPage({
   const post = await fetchBlogBySlug(slug);
 
   if (!post || !post.title) {
-    return (
-      <main className="container mx-auto px-4 md:px-6 py-12 text-center">
-        <h1 className="text-3xl font-bold mb-4">Post Not Found</h1>
-        <p className="mb-6">The requested blog post could not be found.</p>
-        <Link
-          href="/blog"
-          className="text-[var(--color-primary-600)] hover:underline"
-        >
-          ← Back to Blog
-        </Link>
-      </main>
-    );
+    notFound();
   }
 
   // Format date if available

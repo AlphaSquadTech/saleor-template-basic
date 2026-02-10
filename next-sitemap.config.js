@@ -17,31 +17,57 @@ function isProductionRobots() {
 const ROBOTS_ALLOW_INDEXING = isProductionRobots();
 
 async function fetchAllProducts() {
-  if (!PARTSLOGIC_URL) return [];
+  // IMPORTANT:
+  // The Basic Template PDP is Saleor-backed. Generating product sitemap entries from PartsLogic
+  // can produce URLs that 404 on the storefront (slug mismatch). Use Saleor as source of truth.
+  if (!SALEOR_API_URL) return [];
+
+  const channel = process.env.NEXT_PUBLIC_SALEOR_CHANNEL || "default-channel";
   const products = [];
-  let page = 1;
-  let hasMore = true;
-  const perPage = 100;
+  const first = 100;
+  let after = null;
+  let hasNext = true;
 
-  while (hasMore) {
-    try {
-      const res = await fetch(`${PARTSLOGIC_URL}/api/search/products?per_page=${perPage}&page=${page}`);
-      if (!res.ok) break;
-      const data = await res.json();
-
-      if (data.products && data.products.length > 0) {
-        products.push(...data.products);
-        hasMore = page < data.pagination.total_pages;
-        page++;
-      } else {
-        hasMore = false;
+  const query = `
+    query SitemapProducts($first: Int!, $after: String, $channel: String!) {
+      products(first: $first, after: $after, channel: $channel) {
+        edges {
+          node {
+            slug
+            updatedAt
+          }
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
       }
+    }
+  `;
+
+  while (hasNext) {
+    try {
+      const res = await fetch(SALEOR_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, variables: { first, after, channel } }),
+      });
+      if (!res.ok) break;
+      const json = await res.json();
+      const edges = json?.data?.products?.edges || [];
+      edges.forEach((e) => {
+        if (e?.node?.slug) products.push(e.node);
+      });
+      hasNext = Boolean(json?.data?.products?.pageInfo?.hasNextPage);
+      after = json?.data?.products?.pageInfo?.endCursor || null;
+      if (!hasNext) break;
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching Saleor products:", error);
       break;
     }
   }
-  console.log(`Fetched ${products.length} products for sitemap`);
+
+  console.log(`Fetched ${products.length} products for sitemap (Saleor)`);
   return products;
 }
 
@@ -242,7 +268,7 @@ module.exports = {
       loc: `/product/${encodeURIComponent(p.slug)}`,
       changefreq: 'weekly',
       priority: 0.8,
-      lastmod: p.updated_at ? new Date(p.updated_at * 1000).toISOString() : new Date().toISOString(),
+      lastmod: p.updatedAt ? new Date(p.updatedAt).toISOString() : new Date().toISOString(),
     }));
 
     // Categories (flattened from hierarchy)
