@@ -5,12 +5,6 @@ import CommonButton from "@/app/components/reuseableUI/commonButton";
 import PrimaryButton from "@/app/components/reuseableUI/primaryButton";
 import { SkeletonLoader } from "@/app/components/reuseableUI/skeletonLoader";
 import { SpinnerIcon } from "@/app/utils/svgs/spinnerIcon";
-import {
-  PRODUCT_DETAILS_BY_ID,
-  type ProductDetailsByIdData,
-  type ProductDetailsByIdVars,
-} from "@/graphql/queries/productDetailsById";
-import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import {
   useParams,
@@ -54,7 +48,48 @@ type EditorBlock =
       };
     };
 
-export function ProductDetailClient() {
+// Client components can't import server-only modules for types. Keep a local
+// shape that matches `getProductBySlug` (server) for the fields we render.
+type InitialProduct = {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  category: { id: string; name: string } | null;
+  pricing: {
+    priceRange: {
+      start: { gross: { amount: number; currency: string } | null } | null;
+      stop: { gross: { amount: number; currency: string } | null } | null;
+    } | null;
+    discount: { gross: { amount: number; currency: string } | null } | null;
+  } | null;
+  media: Array<{ id: string; url: string; alt: string }>;
+  variants: Array<{
+    id: string;
+    name: string;
+    sku: string;
+    quantityAvailable: number | null;
+    pricing: {
+      price: { gross: { amount: number; currency: string } | null } | null;
+      priceUndiscounted: {
+        gross: { amount: number; currency: string } | null;
+      } | null;
+    } | null;
+    attributes: Array<{
+      attribute: { slug: string; name: string } | null;
+      values: Array<{ id: string; name: string }> | null;
+    }> | null;
+    weight: { value: number; unit: string } | null;
+  }>;
+  attributes: Array<{
+    attribute: { name: string; slug: string } | null;
+    values: Array<{ id: string; name: string }> | null;
+  }>;
+  metadata: Array<{ key: string; value: string }>;
+  collections: Array<{ id: string; name: string }>;
+};
+
+export function ProductDetailClient({ initialProduct }: { initialProduct: InitialProduct }) {
   const params = useParams<{ id: string }>();
   const [pdpContent, setPDPContent] = useState<AncillaryPage | null>(null);
   // The URL param contains the normalized slug (with single dashes)
@@ -76,22 +111,18 @@ export function ProductDetailClient() {
   const { getGoogleTagManagerConfig } = useAppConfiguration();
   const gtmConfig = getGoogleTagManagerConfig();
 
-  const { data, loading, error } = useQuery<
-    ProductDetailsByIdData,
-    ProductDetailsByIdVars
-  >(PRODUCT_DETAILS_BY_ID, {
-    variables: { slug, channel },
-    skip: !slug,
-    fetchPolicy: "cache-first", // Use cache-first for better performance
-    nextFetchPolicy: "cache-first", // Maintain cache-first on refetch
-  });
+  // SEO/perf: product data is fetched on the server and passed in.
+  // This avoids a client-side Apollo fetch (which would otherwise render a skeleton in HTML).
+  const product = initialProduct;
+  const loading = false;
+  const error = null;
 
   useEffect(() => {
     const fetchPageContent = async () => {
       if (
-        product?.metadata.find((item) => item?.key === "availability")
+        product?.metadata?.find((item) => item?.key === "availability")
           ?.value === "Please Call" ||
-        product?.metadata.find((item) => item?.key === "availability")
+        product?.metadata?.find((item) => item?.key === "availability")
           ?.value === "Available"
       )
         return;
@@ -107,8 +138,6 @@ export function ProductDetailClient() {
 
     fetchPageContent();
   }, []);
-
-  const product = data?.product ?? null;
 
   const images = product?.media ?? [];
   const firstImageUrl = images[0]?.url ?? "";
@@ -742,7 +771,7 @@ export function ProductDetailClient() {
               })()}
 
               {/* Variants */}
-              {product?.metadata.find((item) => item?.key === "availability")
+              {product?.metadata?.find((item) => item?.key === "availability")
                 ?.value !== "Please Call" && (
                 <>
                   {!!product.variants?.length &&
@@ -796,7 +825,7 @@ export function ProductDetailClient() {
                 </>
               )}
               {/* Actions (no cart/checkout in this template) */}
-              {product?.metadata.find((item) => item?.key === "availability")
+              {product?.metadata?.find((item) => item?.key === "availability")
                 ?.value !== "Please Call" && (
                 <div className="space-y-3">
                   <PrimaryButton

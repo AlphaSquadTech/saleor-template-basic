@@ -154,9 +154,10 @@ export default function CategoryPageClient(props: CategoryPageClientProps) {
         <Breadcrumb items={breadcrumbItems} />
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between w-full gap-4">
           <div className="space-y-2">
-            <h1 className="font-normal uppercase text-(--color-secondary-800) whitespace-nowrap text-xl md:text-3xl lg:text-5xl font-primary">
+            {/* H1 is rendered server-side in `src/app/category/[slug]/page.tsx` for SEO. */}
+            <h2 className="font-normal uppercase text-(--color-secondary-800) whitespace-nowrap text-xl md:text-3xl lg:text-5xl font-primary">
               {categoryName || slug}
-            </h1>
+            </h2>
             {searchQuery && (
               <div className="flex items-center gap-2 text-sm text-(--color-secondary-600)">
                 <div className="flex items-center gap-2">

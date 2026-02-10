@@ -13,11 +13,16 @@ export async function getProductBySlug(slug: string) {
         name
         slug
         description
+        metadata {
+          key
+          value
+        }
         category {
           id
           name
         }
         pricing {
+          onSale
           priceRange {
             start {
               gross {
@@ -65,12 +70,14 @@ export async function getProductBySlug(slug: string) {
           }
           attributes {
             attribute {
+              id
               slug
               name
             }
             values {
               id
               name
+              slug
             }
           }
           weight {
@@ -80,17 +87,15 @@ export async function getProductBySlug(slug: string) {
         }
         attributes {
           attribute {
+            id
             name
             slug
           }
           values {
             id
             name
+            slug
           }
-        }
-        metadata {
-          key
-          value
         }
         collections {
           id
