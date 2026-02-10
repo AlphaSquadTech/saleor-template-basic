@@ -69,6 +69,8 @@ Instead they call internal API routes:
 - Saleor global search: `GET /api/saleor/global-search?q=...`
 - Saleor products pagination: `POST /api/saleor/products`
 
+The main header navigation is server-rendered (no client-side nav boot required). Category + menu data is cached on the server with `unstable_cache` to avoid refetching on every request.
+
 ## SMTP (Env-Configurable)
 
 `/api/form-submission` supports SMTP delivery via env variables (optional). If SMTP is not configured, the API returns a clear error.

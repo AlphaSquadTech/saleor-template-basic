@@ -1,5 +1,6 @@
 import { shopApi, type GraphQLCategory } from "@/lib/api/shop";
 import { fetchMenuBySlug } from "@/graphql/queries/getMenuBySlug";
+import { unstable_cache } from "next/cache";
 
 export type CategoryNode = {
   id: string;
@@ -20,7 +21,7 @@ export type MenuItem = {
   children?: MenuItem[];
 };
 
-export const fetchCategories = async (): Promise<CategoryNode[]> => {
+const fetchCategoriesUncached = async (): Promise<CategoryNode[]> => {
   try {
     // Fetch categories from GraphQL API (same as shop page)
     const channel = "default-channel";
@@ -52,7 +53,7 @@ export const fetchCategories = async (): Promise<CategoryNode[]> => {
   }
 };
 
-export const fetchMenuData = async (): Promise<MenuItem[]> => {
+const fetchMenuDataUncached = async (): Promise<MenuItem[]> => {
   try {
     const menuData = await fetchMenuBySlug("navbar");
     if (
@@ -69,3 +70,17 @@ export const fetchMenuData = async (): Promise<MenuItem[]> => {
     return [];
   }
 };
+
+// Cache across requests (and during prerender/build) so the main nav can be
+// served as static HTML without refetching on every request.
+export const fetchCategories = unstable_cache(
+  fetchCategoriesUncached,
+  ["navbar:categories:v1"],
+  { revalidate: 60 * 60 } // 1h
+);
+
+export const fetchMenuData = unstable_cache(
+  fetchMenuDataUncached,
+  ["navbar:menu:v1"],
+  { revalidate: 60 * 60 } // 1h
+);
