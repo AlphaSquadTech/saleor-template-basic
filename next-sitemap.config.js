@@ -3,6 +3,18 @@
 const PARTSLOGIC_URL = process.env.NEXT_PUBLIC_PARTSLOGIC_URL || '';
 // Expect a full Saleor GraphQL endpoint in NEXT_PUBLIC_API_URL (or leave unset to skip CMS-backed sitemap paths).
 const SALEOR_API_URL = process.env.NEXT_PUBLIC_API_URL || '';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+
+function isProductionRobots() {
+  // Block indexing for preview/staging/local environments.
+  // Vercel sets VERCEL_ENV to 'production' | 'preview' | 'development'.
+  const vercelEnv = (process.env.VERCEL_ENV || '').toLowerCase();
+  if (vercelEnv && vercelEnv !== 'production') return false;
+  if (SITE_URL.includes('localhost') || SITE_URL.includes('127.0.0.1')) return false;
+  return true;
+}
+
+const ROBOTS_ALLOW_INDEXING = isProductionRobots();
 
 async function fetchAllProducts() {
   if (!PARTSLOGIC_URL) return [];
@@ -160,7 +172,7 @@ async function fetchAllBlogs() {
 }
 
 module.exports = {
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+  siteUrl: SITE_URL,
   generateRobotsTxt: true,
   generateIndexSitemap: false,
   exclude: [
@@ -181,11 +193,34 @@ module.exports = {
   ],
 
   robotsTxtOptions: {
-    policies: [{
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/checkout/', '/checkout', '/cart', '/order-confirmation/', '/order-confirmation', '/account/', '/account', '/orders/', '/orders', '/settings/', '/settings', '/api/', '/authorize-net-success'],
-    }],
+    policies: ROBOTS_ALLOW_INDEXING
+      ? [
+          {
+            userAgent: '*',
+            allow: '/',
+            disallow: [
+              '/checkout/',
+              '/checkout',
+              '/cart',
+              '/order-confirmation/',
+              '/order-confirmation',
+              '/account/',
+              '/account',
+              '/orders/',
+              '/orders',
+              '/settings/',
+              '/settings',
+              '/api/',
+              '/authorize-net-success',
+            ],
+          },
+        ]
+      : [
+          {
+            userAgent: '*',
+            disallow: '/',
+          },
+        ],
   },
 
   transform: async (config, path) => {

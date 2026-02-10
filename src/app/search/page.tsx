@@ -26,7 +26,7 @@ import { useVehicleData } from "@/hooks/useVehicleData";
 import { generateItemListSchema } from "@/lib/schema";
 import { handleScrollToTop } from "@/hooks/scrollPageTop";
 
-export const dynamic = "force-dynamic";
+// This page is intentionally client-rendered and `noindex` (see `src/app/search/layout.tsx`).
 
 type ViewMode = "grid" | "list";
 
