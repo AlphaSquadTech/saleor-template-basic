@@ -193,20 +193,21 @@ function DealerApplication() {
         );
       }
 
-      const response = await fetch("/api/form-submission", {
+
+      const tenantName = process.env.NEXT_PUBLIC_API_URL || "";
+
+      const response = await fetch("https://smtp.wsm-dev.com/api/send-email", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
-          formType: "dealer-application",
-          pageSlug: "dealer-application",
-          data: emailMessage,
-          metadata: {
-            to: recipients,
-            cc: ccRecipients.length > 0 ? ccRecipients : undefined,
-            bcc: bccRecipients.length > 0 ? bccRecipients : undefined,
-            subject: dealerPageData?.emailSubject || "Dealer Application",
-          },
-          timestamp: new Date().toISOString(),
+          tenant_name: tenantName,
+          to: recipients,
+          cc: ccRecipients.length > 0 ? ccRecipients : undefined,
+          bcc: bccRecipients.length > 0 ? bccRecipients : undefined,
+          subject:  dealerPageData?.emailSubject || "Dealer Application",
+          message: emailMessage,
         }),
       });
 
