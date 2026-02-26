@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "preinstall": "bash ./scripts/init-submodule.sh",
     "dev": "next dev --turbopack",
     "build": "next build",
     "postbuild": "next-sitemap",
@@ -41,5 +42,8 @@
     "next-sitemap": "^4.2.3",
     "tailwindcss": "^4.1.11",
     "typescript": "^5"
+  },
+  "optionalDependencies": {
+    "lightningcss-linux-x64-gnu": "^1.30.2"
   }
 }

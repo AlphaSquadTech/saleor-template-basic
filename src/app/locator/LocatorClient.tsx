@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import StoreLocator from "./components/storeLocator";
-import Breadcrumb from "../components/reuseableUI/breadcrumb";
+import Breadcrumb from "@/app/components/reuseableUI/breadcrumb";
 import OnlineDealers from "./components/onlineDealers";
 import Distributors from "./components/distributors";
 

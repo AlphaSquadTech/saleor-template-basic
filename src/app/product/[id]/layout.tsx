@@ -1,7 +1,1 @@
-export default function ProductDetailLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return children;
-}
+export { default } from "@core/app/product/[id]/layout";

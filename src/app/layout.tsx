@@ -1,8 +1,8 @@
 import Layout from "@/app/components/layout/rootLayout";
 import { ThemeProvider } from "@/app/components/theme/theme-provider";
 import { Theme } from "@/app/utils/functions";
-import ConditionalGoogleAnalytics from "./components/analytics/ConditionalGoogleAnalytics";
-import ConditionalGTMNoscript from "./components/analytics/ConditionalGTMNoscript";
+import ConditionalGoogleAnalytics from "@/app/components/analytics/ConditionalGoogleAnalytics";
+import ConditionalGTMNoscript from "@/app/components/analytics/ConditionalGTMNoscript";
 import type { Metadata } from "next";
 import { Archivo, Days_One } from "next/font/google";
 import type React from "react";
@@ -10,16 +10,16 @@ import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import AnalyticsScripts from "./components/analytics/AnalyticsScripts";
-import ApolloWrapper from "./components/providers/ApolloWrapper";
-import GoogleTagManagerProvider from "./components/providers/GoogleTagManagerProvider";
-import { ServerAppConfigurationProvider } from "./components/providers/ServerAppConfigurationProvider";
-import { getClientSafeConfiguration } from "./utils/serverConfigurationService";
-import RecaptchaProvider from "./components/providers/RecaptchaProvider";
+import AnalyticsScripts from "@/app/components/analytics/AnalyticsScripts";
+import ApolloWrapper from "@/app/components/providers/ApolloWrapper";
+import GoogleTagManagerProvider from "@/app/components/providers/GoogleTagManagerProvider";
+import { ServerAppConfigurationProvider } from "@/app/components/providers/ServerAppConfigurationProvider";
+import { getClientSafeConfiguration } from "@/app/utils/serverConfigurationService";
+import RecaptchaProvider from "@/app/components/providers/RecaptchaProvider";
 import "./globals.css";
-import GoogleAnalyticsProvider from "./components/providers/GoogleAnalyticsProvider";
-import { getStoreName } from "./utils/branding";
-import YMMStatusProvider from "./components/providers/YMMStatusProvider";
+import GoogleAnalyticsProvider from "@/app/components/providers/GoogleAnalyticsProvider";
+import { getStoreName } from "@/app/utils/branding";
+import YMMStatusProvider from "@/app/components/providers/YMMStatusProvider";
 import ClientPopups from "./components/newsletter/ClientPopups";
 
 const archivo = Archivo({
