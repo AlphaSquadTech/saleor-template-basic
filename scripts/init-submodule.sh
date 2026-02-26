@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -eu
 
 # Detect environment: Vercel sets the VERCEL=1 env var automatically
 if [ "${VERCEL:-}" = "1" ]; then
