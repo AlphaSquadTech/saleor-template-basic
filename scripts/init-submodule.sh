@@ -11,9 +11,12 @@ if [ "${VERCEL:-}" = "1" ]; then
   fi
 
   mkdir -p ~/.ssh
+  # Decode the Base64 key
   echo "$SALEOR_SSH_PRIVATE_KEY_BASE64" | base64 --decode > ~/.ssh/id_ed25519
   chmod 600 ~/.ssh/id_ed25519
-  ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null
+
+  # Force Git to use this specific key and disable the interactive known_hosts prompt
+  export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no"
 
   echo "[submodule] SSH deploy key configured."
 else
