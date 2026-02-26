@@ -4,21 +4,21 @@ import {
 } from "@/lib/schema";
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { SkeletonLoader } from "./components/reuseableUI/skeletonLoader";
-import { BundleProducts } from "./components/showroom/bundleProducts";
-import { CategoryGridServer } from "./components/showroom/categoryGridServer";
-import { BrandsSwiperServer } from "./components/showroom/brandsSwiperServer";
-import { OffersSwiper } from "./components/showroom/offersSwiper";
-import { ProductGrid } from "./components/showroom/productGrid";
-import { ShowroomHeroCarousel } from "./components/showroom/showroomHeroCarousel";
-import { TestimonialsGrid } from "./components/showroom/testimonialsGrid";
-import { getStoreName } from "./utils/branding";
+import { SkeletonLoader } from "@/app/components/reuseableUI/skeletonLoader";
+import { BundleProducts } from "@/app/components/showroom/bundleProducts";
+import { CategoryGridServer } from "@/app/components/showroom/categoryGridServer";
+import { BrandsSwiperServer } from "@/app/components/showroom/brandsSwiperServer";
+import { OffersSwiper } from "@/app/components/showroom/offersSwiper";
+import { ProductGrid } from "@/app/components/showroom/productGrid";
+import { ShowroomHeroCarousel } from "@/app/components/showroom/showroomHeroCarousel";
+import { TestimonialsGrid } from "@/app/components/showroom/testimonialsGrid";
+import { getStoreName } from "@/app/utils/branding";
 import dynamic from "next/dynamic";
-import { FeaturesStrip } from "./components/showroom/featuresStrip";
+import { FeaturesStrip } from "@/app/components/showroom/featuresStrip";
 import {
   LazyInstallationSection,
   LazyIndustriesSection,
-} from "./components/showroom/lazySections";
+} from "@/app/components/showroom/lazySections";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 const storeName = getStoreName();
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 const Promotions = dynamic(
   () =>
-    import("./components/showroom/promotion").then((mod) => ({
+    import("@/app/components/showroom/promotion").then((mod) => ({
       default: mod.Promotions,
     })),
   {
