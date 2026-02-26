@@ -5,13 +5,13 @@ set -euo pipefail
 if [ "${VERCEL:-}" = "1" ]; then
   echo "[submodule] Vercel CI detected — setting up SSH deploy key..."
 
-  if [ -z "${SSH_PRIVATE_KEY_BASE64:-}" ]; then
-    echo "[submodule] ERROR: SSH_PRIVATE_KEY_BASE64 env var is not set." >&2
+  if [ -z "${SALEOR_SSH_PRIVATE_KEY_BASE64:-}" ]; then
+    echo "[submodule] ERROR: SALEOR_SSH_PRIVATE_KEY_BASE64 env var is not set." >&2
     exit 1
   fi
 
   mkdir -p ~/.ssh
-  echo "$SSH_PRIVATE_KEY_BASE64" | base64 --decode > ~/.ssh/id_ed25519
+  echo "$SALEOR_SSH_PRIVATE_KEY_BASE64" | base64 --decode > ~/.ssh/id_ed25519
   chmod 600 ~/.ssh/id_ed25519
   ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null
 
